@@ -229,6 +229,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                 
                 while(i < coordsArray.count - 1)
                 {
+                    
                     var marker = markersArray[j]
                     marker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
                     
