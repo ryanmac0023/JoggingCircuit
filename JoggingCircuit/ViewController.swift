@@ -20,6 +20,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     let locManager = CLLocationManager()
     let undoButton = UIButton()
     let startButton = UIButton()
+    let timerLabel = UILabel()
     var mapView = GMSMapView()
     var currentPosition = CLLocationCoordinate2D()
     var endingPosition = CLLocationCoordinate2D()
@@ -32,6 +33,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var endCurrent: Bool!
     var markerStart = GMSMarker()
     var markerEnd = GMSMarker()
+    var startTime = NSTimeInterval()
+    var timer = NSTimer()
+    
 
  
     
@@ -69,74 +73,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     func testFunc(){
         
         
-        if(startCurrent == true && endCurrent == true){
-            var camera = GMSCameraPosition.cameraWithLatitude(currentPosition.latitude, longitude: currentPosition.longitude, zoom: 15)
-            mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
-            mapView.myLocationEnabled = true
-            mapView.delegate = self
-            var position = CLLocationCoordinate2DMake(currentPosition.latitude,  currentPosition.longitude)
-            coordsArray.append(position)
-            markerStart = GMSMarker(position: position)
-            endingPosition = CLLocationCoordinate2DMake(currentPosition.latitude, currentPosition.longitude)
-            markerStart.title = "Start"
-            markerStart.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
-            markerStart.map = mapView
-            markersArray.append(markerStart)
-            markerEnd = GMSMarker(position: endingPosition)
-            markerEnd.title = "End"
-            markerEnd.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-            markerEnd.map = mapView
-            markersArray.append(markerEnd)
-
-            
-            self.view = mapView
-        }
-        else if(startCurrent == true && endCurrent == false){
-            println("test")
-            var camera = GMSCameraPosition.cameraWithLatitude(currentPosition.latitude, longitude: currentPosition.longitude, zoom: 15)
-            mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
-            mapView.myLocationEnabled = true
-            mapView.delegate = self
-            var position = CLLocationCoordinate2DMake(currentPosition.latitude,  currentPosition.longitude)
-            coordsArray.append(position)
-            markerStart = GMSMarker(position: position)
-            endingPosition = CLLocationCoordinate2DMake(endLat, endLong)
-            markerStart.title = "Start"
-            markerStart.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
-            markerStart.map = mapView
-            markersArray.append(markerStart)
-            markerEnd = GMSMarker(position: endingPosition)
-            markerEnd.title = "End"
-            markerEnd.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-            markerEnd.map = mapView
-            markersArray.append(markerEnd)
-            
-            self.view = mapView
-        }
-        else if(startCurrent == false && endCurrent == true)
-        {
-            var camera = GMSCameraPosition.cameraWithLatitude(startLat, longitude: startLong, zoom: 15)
-            mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
-            mapView.myLocationEnabled = true
-            mapView.delegate = self
-            var position = CLLocationCoordinate2DMake(startLat,  startLong)
-            coordsArray.append(position)
-            markerStart = GMSMarker(position: position)
-            endingPosition = CLLocationCoordinate2DMake(currentPosition.latitude,  currentPosition.longitude)
-            markerStart.title = "Start"
-            markerStart.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
-            markerStart.map = mapView
-            markersArray.append(markerStart)
-            markerEnd = GMSMarker(position: endingPosition)
-            markerEnd.title = "End"
-            markerEnd.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-            markerEnd.map = mapView
-            markersArray.append(markerEnd)
-            
-            self.view = mapView
-
-        }
-        else{
             
             var camera = GMSCameraPosition.cameraWithLatitude(startLat, longitude: startLong, zoom: 15)
             mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
@@ -157,8 +93,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             markersArray.append(markerEnd)
             
             self.view = mapView
-            
-        }
+        
         
         undoButton.setTitle("Undo Tap", forState: .Normal)
         undoButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
@@ -196,15 +131,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         if let location = locations.first as? CLLocation {
             
+            
             currentPosition = location.coordinate
-            println("here")
 
             if(check == 0){
             mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
                         self.locManager.stopUpdatingLocation()
             }
             else if(check == 1){
-                            mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 17, bearing: 0, viewingAngle: 0)
+            mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 17, bearing: 0, viewingAngle: 0)
             }
         }
     }
@@ -215,23 +150,73 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     
     func startPressed(sender:UIButton!){
         
+        timerLabel.frame = CGRectMake(120, 510, 100, 50)
+        timerLabel.font = UIFont(name: timerLabel.font.fontName, size: 20)
+                self.view.addSubview(timerLabel)
+        
+        while(markersArray.count > 2)
+        {
+            var marker = markersArray[markersArray.count - 1]
+            marker.map = nil
+            markersArray.removeLast()
+        }
+        
+        startButton.hidden = true
+        undoButton.hidden = true
+        
         self.locManager.startUpdatingLocation()
         self.check = 1
+        
+        let aSelector : Selector = "updateTime"
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
+        startTime = NSDate.timeIntervalSinceReferenceDate()
 
     
+    }
+    
+    func updateTime(){
+        var currentTime = NSDate.timeIntervalSinceReferenceDate()
+        
+        //Find the difference between current time and start time.
+        var elapsedTime: NSTimeInterval = currentTime - startTime
+        
+        
+        //calculate the minutes in elapsed time.
+        let minutes = UInt8(elapsedTime / 60.0)
+        elapsedTime -= (NSTimeInterval(minutes) * 60)
+        
+        //calculate the seconds in elapsed time.
+        let seconds = UInt8(elapsedTime)
+        elapsedTime -= NSTimeInterval(seconds)
+        
+        //find out the fraction of milliseconds to be displayed.
+        let fraction = UInt8(elapsedTime * 100)
+        
+        //add the leading zero for minutes, seconds and millseconds and store them as string constants
+        let strMinutes = minutes > 9 ? String(minutes):"0" + String(minutes)
+        let strSeconds = seconds > 9 ? String(seconds):"0" + String(seconds)
+        let strFraction = fraction > 9 ? String(fraction):"0" + String(fraction)
+        
+        //concatenate minuets, seconds and milliseconds as assign it to the UILabel
+        timerLabel.text = "\(strMinutes):\(strSeconds):\(strFraction)"
     }
     
     func undoPressed(sender: UIButton!) {
 
         if(markersArray.count > 2)
         {
-        println("here")
         var marker = markersArray[markersArray.count - 1]
         
         self.mapView.clear()
-        marker.map = nil;
         markersArray.removeLast()
         coordsArray.removeLast()
+        var startMarker = markersArray[0]
+        var endMarker = markersArray[1]
+        
+        startMarker.map = mapView
+        endMarker.map = mapView
+            
+        
             
             if (coordsArray.count < (taps + 2))
             {
@@ -374,7 +359,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                         line.map = mapView
                     }
                 }
-                //check = 1
 
 
             }

@@ -140,10 +140,24 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         
 
             var viewController:ViewController = segue.destinationViewController as! ViewController
+        if(endCurrent == true)
+        {
+            viewController.endLat = currentPosition.latitude
+            viewController.endLong = currentPosition.longitude
+        }
+        else{
             viewController.endLat = endLat
             viewController.endLong = endLong
+        }
+        if(startCurrent == true){
+            viewController.startLat = currentPosition.latitude
+            viewController.startLong = currentPosition.longitude
+        }
+        else{
             viewController.startLat = startLat
             viewController.startLong = startLong
+        }
+
             viewController.taps = taps
             viewController.startCurrent = startCurrent
             viewController.endCurrent = endCurrent
