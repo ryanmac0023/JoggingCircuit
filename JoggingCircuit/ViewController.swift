@@ -44,7 +44,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         self.locManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locManager.requestWhenInUseAuthorization()
         
-        if(startCurrent == true){
+        if(endCurrent == true){
             endLat = currentPosition.latitude
             endLong = currentPosition.longitude
         }
@@ -76,13 +76,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             marker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
             marker.map = mapView
             var marker2 = GMSMarker(position: endingPosition)
-            marker.title = "End"
-            marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-            marker.map = mapView
+            marker2.title = "End"
+            marker2.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+            marker2.map = mapView
             
             self.view = mapView
         }
         else if(startCurrent == true && endCurrent == false){
+            println("test")
             var camera = GMSCameraPosition.cameraWithLatitude(currentPosition.latitude, longitude: currentPosition.longitude, zoom: 15)
             mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
             mapView.myLocationEnabled = true
@@ -95,9 +96,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             marker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
             marker.map = mapView
             var marker2 = GMSMarker(position: endingPosition)
-            marker.title = "End"
-            marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-            marker.map = mapView
+            marker2.title = "End"
+            marker2.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+            marker2.map = mapView
             
             self.view = mapView
         }
@@ -115,9 +116,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             marker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
             marker.map = mapView
             var marker2 = GMSMarker(position: endingPosition)
-            marker.title = "End"
-            marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-            marker.map = mapView
+            marker2.title = "End"
+            marker2.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+            marker2.map = mapView
             
             self.view = mapView
 
@@ -136,9 +137,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             marker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
             marker.map = mapView
             var marker2 = GMSMarker(position: endingPosition)
-            marker.title = "End"
-            marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-            marker.map = mapView
+            marker2.title = "End"
+            marker2.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+            marker2.map = mapView
             
             self.view = mapView
             
@@ -171,7 +172,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
             }
             else if(check == 1){
-                            mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 16, bearing: 0, viewingAngle: 0)
+                            mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 17, bearing: 0, viewingAngle: 0)
             }
             //self.locManager.stopUpdatingLocation()
         }
