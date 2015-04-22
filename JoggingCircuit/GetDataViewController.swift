@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreLocation
 
-class GetDataViewController: UIViewController {
+class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate {
     
     
     @IBOutlet weak var endingText: UITextField!
@@ -18,15 +19,30 @@ class GetDataViewController: UIViewController {
     
     @IBOutlet weak var showButton: UIButton!
     @IBOutlet weak var storeButton: UIButton!
+    
+    @IBOutlet weak var startSwitch: UISwitch!
+    
+    @IBOutlet weak var endSwitch: UISwitch!
+    
+    let locManager = CLLocationManager()
+
+    var currentPosition = CLLocationCoordinate2D()
+
     var endLat: CLLocationDegrees!
     var endLong: CLLocationDegrees!
     var startLat: CLLocationDegrees!
     var startLong: CLLocationDegrees!
     var taps: Int!
+    var startCurrent: Bool = false
+    var endCurrent: Bool = false
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.locManager.delegate = self
+        self.locManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locManager.requestWhenInUseAuthorization()
+
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "running-path_00006124.jpg")!)
 
         storeButton.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.3)
@@ -34,7 +50,58 @@ class GetDataViewController: UIViewController {
         storeButton.layer.cornerRadius = 13.0
         showButton.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.3)
         showButton.layer.cornerRadius = 13.0
+        
+        self.endingText.delegate = self
+        self.tapsText.delegate = self
+        self.endingText.delegate = self
+        startSwitch.setOn(false, animated: false);
+        endSwitch.setOn(false, animated: false);
+        startSwitch.addTarget(self, action: Selector("stateChanged:"), forControlEvents: UIControlEvents.ValueChanged)
+        endSwitch.addTarget(self, action: Selector("stateChanged2:"), forControlEvents: UIControlEvents.ValueChanged)
 
+    }
+    
+    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        
+        if status == .AuthorizedWhenInUse {
+            
+            
+            self.locManager.startUpdatingLocation()
+            
+
+        }
+    }
+    
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        if let location = locations.first as? CLLocation {
+            
+            currentPosition = location.coordinate
+            
+            self.locManager.stopUpdatingLocation()
+            
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+        println("Error:" + error.localizedDescription)
+    }
+
+    
+    func stateChanged(switchState: UISwitch) {
+        if switchState.on {
+            startCurrent = true
+        } else {
+            startCurrent = false
+        }
+    }
+    
+    func stateChanged2(switchState: UISwitch) {
+        if switchState.on {
+            endCurrent = true
+        } else {
+            endCurrent = false
+        }
     }
     
     @IBAction func saveButtonPressed(sender: AnyObject) {
@@ -64,6 +131,11 @@ class GetDataViewController: UIViewController {
 
     }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
 
@@ -73,6 +145,9 @@ class GetDataViewController: UIViewController {
             viewController.startLat = startLat
             viewController.startLong = startLong
             viewController.taps = taps
+            viewController.startCurrent = startCurrent
+            viewController.endCurrent = endCurrent
+        viewController.currentPosition = currentPosition
 
     }
 
