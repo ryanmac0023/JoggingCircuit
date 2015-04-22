@@ -19,16 +19,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     let dataProvider = GoogleDataProvider()
     let locManager = CLLocationManager()
     var mapView = GMSMapView()
+    var currentPosition = CLLocationCoordinate2D()
     var endingPosition = CLLocationCoordinate2D()
     var endLat: CLLocationDegrees!
     var endLong: CLLocationDegrees!
     var startLat: CLLocationDegrees!
     var startLong: CLLocationDegrees!
     var taps: Int!
+    var startCurrent: Bool!
+    var endCurrent: Bool!
+
  
     
     var coordsArray: Array<CLLocationCoordinate2D> = []
        var test: Int = 0
+        var check: Int = 0
     
     
     override func viewDidLoad() {
@@ -38,67 +43,145 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         self.locManager.delegate = self
         self.locManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locManager.requestWhenInUseAuthorization()
-        self.locManager.startUpdatingLocation()
-        var camera = GMSCameraPosition.cameraWithLatitude(startLat, longitude: startLong, zoom: 15)
-        mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
-        mapView.myLocationEnabled = true
-        mapView.delegate = self
-        var position = CLLocationCoordinate2DMake(startLat,  startLong)
-        coordsArray.append(position)
-        var marker = GMSMarker(position: position)
-        endingPosition = CLLocationCoordinate2DMake(endLat, endLong)
-        marker.title = "Start"
-        marker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
-        marker.map = mapView
-        println(self.taps)
-
-        if let mylocation = mapView.myLocation {
-        } else {
+        
+        if(startCurrent == true){
+            endLat = currentPosition.latitude
+            endLong = currentPosition.longitude
         }
-        self.view = mapView
-    }
+        
+        
 
+        self.testFunc()
+
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    func testFunc(){
         
+        
+        if(startCurrent == true && endCurrent == true){
+            var camera = GMSCameraPosition.cameraWithLatitude(currentPosition.latitude, longitude: currentPosition.longitude, zoom: 15)
+            mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
+            mapView.myLocationEnabled = true
+            mapView.delegate = self
+            var position = CLLocationCoordinate2DMake(currentPosition.latitude,  currentPosition.longitude)
+            coordsArray.append(position)
+            var marker = GMSMarker(position: position)
+            endingPosition = CLLocationCoordinate2DMake(currentPosition.latitude, currentPosition.longitude)
+            marker.title = "Start"
+            marker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
+            marker.map = mapView
+            var marker2 = GMSMarker(position: endingPosition)
+            marker.title = "End"
+            marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+            marker.map = mapView
+            
+            self.view = mapView
+        }
+        else if(startCurrent == true && endCurrent == false){
+            var camera = GMSCameraPosition.cameraWithLatitude(currentPosition.latitude, longitude: currentPosition.longitude, zoom: 15)
+            mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
+            mapView.myLocationEnabled = true
+            mapView.delegate = self
+            var position = CLLocationCoordinate2DMake(currentPosition.latitude,  currentPosition.longitude)
+            coordsArray.append(position)
+            var marker = GMSMarker(position: position)
+            endingPosition = CLLocationCoordinate2DMake(endLat, endLong)
+            marker.title = "Start"
+            marker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
+            marker.map = mapView
+            var marker2 = GMSMarker(position: endingPosition)
+            marker.title = "End"
+            marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+            marker.map = mapView
+            
+            self.view = mapView
+        }
+        else if(startCurrent == false && endCurrent == true)
+        {
+            var camera = GMSCameraPosition.cameraWithLatitude(startLat, longitude: startLong, zoom: 15)
+            mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
+            mapView.myLocationEnabled = true
+            mapView.delegate = self
+            var position = CLLocationCoordinate2DMake(startLat,  startLong)
+            coordsArray.append(position)
+            var marker = GMSMarker(position: position)
+            endingPosition = CLLocationCoordinate2DMake(currentPosition.latitude,  currentPosition.longitude)
+            marker.title = "Start"
+            marker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
+            marker.map = mapView
+            var marker2 = GMSMarker(position: endingPosition)
+            marker.title = "End"
+            marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+            marker.map = mapView
+            
+            self.view = mapView
 
-        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: {(placemarks, error) -> Void in
+        }
+        else{
             
-            if(error != nil){
-                println("Error:" + error.localizedDescription)
-            }
+            var camera = GMSCameraPosition.cameraWithLatitude(startLat, longitude: startLong, zoom: 15)
+            mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
+            mapView.myLocationEnabled = true
+            mapView.delegate = self
+            var position = CLLocationCoordinate2DMake(startLat,  startLong)
+            coordsArray.append(position)
+            var marker = GMSMarker(position: position)
+            endingPosition = CLLocationCoordinate2DMake(endLat, endLong)
+            marker.title = "Start"
+            marker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
+            marker.map = mapView
+            var marker2 = GMSMarker(position: endingPosition)
+            marker.title = "End"
+            marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+            marker.map = mapView
             
-            if(placemarks.count > 0){
-                let pm = placemarks[0] as! CLPlacemark
-                self.displayLocationInfo(pm)
-            }
-            else{
-                println("error with data")
-            }
+            self.view = mapView
             
-        })
+        }
+        
+        
+        
+    }
+    
+    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        
+        if status == .AuthorizedWhenInUse {
             
+            
+            self.locManager.startUpdatingLocation()
+            
+            mapView.myLocationEnabled = true
+            mapView.settings.myLocationButton = true
+        }
+    }
 
+
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        if let location = locations.first as? CLLocation {
+            
+            currentPosition = location.coordinate
+
+
+            if(check == 0){
+            mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+            }
+            else if(check == 1){
+                            mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 16, bearing: 0, viewingAngle: 0)
+            }
+            //self.locManager.stopUpdatingLocation()
+        }
     }
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
         println("Error:" + error.localizedDescription)
     }
     
-    func displayLocationInfo(placemark: CLPlacemark){
-        self.locManager.stopUpdatingLocation()
 
-        
-        
-    }
-
-    
-
-    
     func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
         coordsArray.append(coordinate)
 
@@ -129,11 +212,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             
             }
             i++
-            //println(i)
-            //println(coordsArray.count)
+
             if(coordsArray.count - 1 == taps)
             {
-                println("here")
                 coordsArray.append(endingPosition)
                 
                 
@@ -166,9 +247,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                         line.map = mapView
                     }
                 }
+                check = 1
+
 
             }
-        }
+            }
         }
         
 
