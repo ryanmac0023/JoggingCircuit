@@ -20,6 +20,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     let locManager = CLLocationManager()
     let undoButton = UIButton()
     let startButton = UIButton()
+    let backButton = UIButton()
     let timerLabel = UILabel()
     var mapView = GMSMapView()
     var currentPosition = CLLocationCoordinate2D()
@@ -111,6 +112,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         startButton.layer.cornerRadius = 13.0
         self.view.addSubview(startButton)
         
+        backButton.setTitle("Back", forState: .Normal)
+        backButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        backButton.frame = CGRectMake(0, 0, 100, 50)
+        backButton.addTarget(self, action: "backPressed:", forControlEvents: .TouchUpInside)
+        backButton.backgroundColor = UIColor(white: 0.667, alpha: 0.5)
+        backButton.layer.cornerRadius = 13.0
+        self.view.addSubview(backButton)
+        
         
         
     }
@@ -146,6 +155,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
         println("Error:" + error.localizedDescription)
+    }
+    
+    func backPressed(sender:UIButton!){
+        performSegueWithIdentifier("backSegue", sender: sender)
     }
     
     func startPressed(sender:UIButton!){
