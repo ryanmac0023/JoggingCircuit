@@ -59,14 +59,10 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         println(workArray)
 
         // Do any additional setup after loading the view, typically from a nib.
-      /*  self.locManager.delegate = self
+       self.locManager.delegate = self
         self.locManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locManager.requestWhenInUseAuthorization()
-        
-        if(endCurrent == true){
-            endLat = currentPosition.latitude
-            endLong = currentPosition.longitude
-        }*/
+
         
         startLat = workArray[0] as! Double
         startLong = workArray[1] as! Double
@@ -226,6 +222,7 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
                 self.locManager.stopUpdatingLocation()
             }
             else if(check == 1){
+                println("here")
                 mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 17, bearing: 0, viewingAngle: 0)
             }
         }
@@ -253,17 +250,12 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
     
     
     func startPressed(sender:UIButton!){
-        
+        check = 1
         timerLabel.frame = CGRectMake(120, 510, 100, 50)
         timerLabel.font = UIFont(name: timerLabel.font.fontName, size: 20)
         self.view.addSubview(timerLabel)
         
-        while(markersArray.count > 2)
-        {
-            var marker = markersArray[markersArray.count - 1]
-            marker.map = nil
-            markersArray.removeLast()
-        }
+
         
         startButton.hidden = true
         undoButton.hidden = true
