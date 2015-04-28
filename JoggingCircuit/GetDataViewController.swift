@@ -33,6 +33,8 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     var startLat: CLLocationDegrees!
     var startLong: CLLocationDegrees!
     var taps: Int!
+    var maps: [Double] = []
+
     var startCurrent: Bool = false
     var endCurrent: Bool = false
     
@@ -138,6 +140,11 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
+        if(segue.identifier == "previousRoute")
+        {
+            
+        }
+        else{
 
             var viewController:ViewController = segue.destinationViewController as! ViewController
         if(endCurrent == true)
@@ -162,6 +169,10 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
             viewController.startCurrent = startCurrent
             viewController.endCurrent = endCurrent
         viewController.currentPosition = currentPosition
+       // let defaults = NSUserDefaults.standardUserDefaults()
+       // defaults.setObject(maps, forKey: "maps")
+        }
+
 
     }
 

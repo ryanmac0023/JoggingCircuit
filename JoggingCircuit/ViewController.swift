@@ -36,14 +36,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var markerEnd = GMSMarker()
     var startTime = NSTimeInterval()
     var timer = NSTimer()
+    var maps: [Double] = []
+
     
 
  
-    
+    var workArray: Array<Double> = []
     var coordsArray: Array<CLLocationCoordinate2D> = []
     var markersArray: Array<GMSMarker> = []
        var test: Int = 0
         var check: Int = 0
+    var complete: Int = 0
+    var blah: Double = 0.0
     
     
     override func viewDidLoad() {
@@ -160,6 +164,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     func backPressed(sender:UIButton!){
         performSegueWithIdentifier("backSegue", sender: sender)
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+
+        if(complete == 1){
+           // maps.append(coordsArray)
+            let defaults = NSUserDefaults.standardUserDefaults()
+
+            defaults.setObject(workArray, forKey: "maps")
+            
+        }
+
+    }
+
     
     func startPressed(sender:UIButton!){
         
@@ -341,6 +358,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
 
             if(coordsArray.count - 1 == taps)
             {
+                complete = 1
                 coordsArray.append(endingPosition)
                 
                 
@@ -372,6 +390,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                         line.tappable = true
                         line.map = mapView
                     }
+                }
+                
+                var k = 0
+                
+                while(k < coordsArray.count){
+                    workArray.append(coordsArray[k].latitude)
+                    workArray.append(coordsArray[k].longitude)
+                    k++
+                    
                 }
 
 
