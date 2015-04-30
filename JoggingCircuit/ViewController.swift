@@ -108,9 +108,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         undoButton.layer.cornerRadius = 13.0
         self.view.addSubview(undoButton)
         
-        startButton.setTitle("Start Route", forState: .Normal)
+        startButton.setTitle("Finish Route", forState: .Normal)
         startButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        startButton.frame = CGRectMake(120, 510, 100, 50)
+        startButton.frame = CGRectMake(120, 510, 130, 50)
         startButton.addTarget(self, action: "startPressed:", forControlEvents: .TouchUpInside)
         startButton.backgroundColor = UIColor(white: 0.667, alpha: 0.5)
         startButton.layer.cornerRadius = 13.0
@@ -180,6 +180,55 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     
     func startPressed(sender:UIButton!){
         
+        if(startButton.titleLabel?.text == "Finish Route"){
+            startButton.setTitle("Start", forState: .Normal)
+            
+            var i = 0
+            while(i < coordsArray.count - 1)
+            {
+                
+                self.dataProvider.fetchDirectionsFrom(coordsArray[i], to: coordsArray[i+1]) {optionalRoute in
+                    if let encodedRoute = optionalRoute {
+                        let path = GMSPath(fromEncodedPath: encodedRoute)
+                        let line = GMSPolyline(path: path)
+                        
+                        line.strokeWidth = 4.0
+                        line.tappable = true
+                        line.map = self.mapView
+                    }
+                    
+                }
+                i++
+            }
+            
+            self.dataProvider.fetchDirectionsFrom(coordsArray[i], to: endingPosition) {optionalRoute in
+                if let encodedRoute = optionalRoute {
+                    let path = GMSPath(fromEncodedPath: encodedRoute)
+                    let line = GMSPolyline(path: path)
+                    
+                    line.strokeWidth = 4.0
+                    line.tappable = true
+                    line.map = self.mapView
+                }
+                
+            }
+
+
+            
+                    var k = 0
+                    
+                    
+                    while(k < coordsArray.count){
+                        workArray.append(coordsArray[k].latitude)
+                        workArray.append(coordsArray[k].longitude)
+                        k++
+                        
+                    }
+            
+        }
+
+        
+        else{
         timerLabel.frame = CGRectMake(120, 510, 100, 50)
         timerLabel.font = UIFont(name: timerLabel.font.fontName, size: 20)
                 self.view.addSubview(timerLabel)
@@ -200,7 +249,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         let aSelector : Selector = "updateTime"
         timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
         startTime = NSDate.timeIntervalSinceReferenceDate()
-
+        }
     
     }
     
@@ -327,8 +376,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
         coordsArray.append(coordinate)
 
-        if (coordsArray.count < (taps + 2))
-        {
+
             var i = 0
         
                 var position = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
@@ -338,7 +386,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                 marker.map = mapView
             markersArray.append(marker)
             
-
+        
 
         while(i < coordsArray.count - 1)
         {
@@ -356,43 +404,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             }
             i++
 
-            if(coordsArray.count - 1 == taps)
-            {
-                complete = 1
-                coordsArray.append(endingPosition)
-                
-                
-                var position = CLLocationCoordinate2DMake(endLat, endLong)
-                var marker = GMSMarker(position: position)
-                marker.title = "End"
-                marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-                marker.map = mapView
-
-                self.dataProvider.fetchDirectionsFrom(coordsArray[coordsArray.count - 3], to: coordsArray[coordsArray.count - 2]) {optionalRoute in
-                    if let encodedRoute = optionalRoute {
-                        let path = GMSPath(fromEncodedPath: encodedRoute)
-                        let line = GMSPolyline(path: path)
-                        
-                        line.strokeWidth = 4.0
-                        line.tappable = true
-                        line.map = mapView
-                        
-                        
-                    }
-                    
-                }
-                self.dataProvider.fetchDirectionsFrom(coordsArray[coordsArray.count - 2], to: coordsArray[coordsArray.count - 1]) {optionalRoute in
-                    if let encodedRoute = optionalRoute {
-                        let path = GMSPath(fromEncodedPath: encodedRoute)
-                        let line = GMSPolyline(path: path)
-                        
-                        line.strokeWidth = 4.0
-                        line.tappable = true
-                        line.map = mapView
-                    }
-                }
-                
+            
                 var k = 0
+                
                 
                 while(k < coordsArray.count){
                     workArray.append(coordsArray[k].latitude)
@@ -400,11 +414,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     k++
                     
                 }
-                
-            }
-            }
+            
         }
-        
 
     }
 }
