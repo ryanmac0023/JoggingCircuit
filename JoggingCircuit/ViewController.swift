@@ -36,7 +36,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var markerEnd = GMSMarker()
     var startTime = NSTimeInterval()
     var timer = NSTimer()
-    var maps: [Double] = []
+    var maps: [AnyObject] = []
 
     
 
@@ -168,10 +168,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
         if(complete == 1){
-           // maps.append(coordsArray)
+           maps.append(workArray)
             let defaults = NSUserDefaults.standardUserDefaults()
 
-            defaults.setObject(workArray, forKey: "maps")
+            defaults.setObject(maps, forKey: "maps")
             
         }
 
@@ -400,8 +400,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     k++
                     
                 }
-
-
+                
             }
             }
         }

@@ -12,7 +12,7 @@ import Foundation
 
 class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
     
-    var workArray: [AnyObject] = []
+    //var workArray: [AnyObject] = []
     
     let dataProvider = GoogleDataProvider()
     let locManager = CLLocationManager()
@@ -36,6 +36,8 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
     var startTime = NSTimeInterval()
     var timer = NSTimer()
     var maps: [AnyObject] = []
+    var workArray: Array<Double> = []
+
     
     
     
@@ -53,10 +55,12 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         sleep(1)
         let defaults = NSUserDefaults.standardUserDefaults()
         if let scoreFromNSUD = defaults.arrayForKey("maps"){
-            workArray = scoreFromNSUD
+            maps = scoreFromNSUD
             
         }
+        workArray = maps[0] as! Array<Double>
         println(workArray)
+        println(workArray.count)
 
         // Do any additional setup after loading the view, typically from a nib.
        self.locManager.delegate = self
@@ -64,13 +68,13 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         self.locManager.requestWhenInUseAuthorization()
 
         
-        startLat = workArray[0] as! Double
-        startLong = workArray[1] as! Double
-        endLat = workArray[4] as! Double
-        endLong = workArray[5] as! Double
+        //println(maps.count);
         
 
-        
+        startLat = workArray[0]
+        startLong = workArray[1]
+        endLat = workArray[workArray.count - 2]
+        endLong = workArray[workArray.count - 1]
        self.testFunc()
         
         
@@ -122,14 +126,14 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         backButton.layer.cornerRadius = 13.0
         self.view.addSubview(backButton)
         
-        var i = 0
-        
-        while(2*i + 3 < 6)
+        var i = 2
+
+        while(i < workArray.count)
         {
-            var lat1 = workArray[i] as! Double
-            var long1 = workArray[i+1] as! Double
-            var lat2 = workArray[i+2] as! Double
-            var long2 = workArray[i+3] as! Double
+            var lat1 = workArray[i - 2]
+            var long1 = workArray[i - 1]
+            var lat2 = workArray[i]
+            var long2 = workArray[i+1]
             
             
             self.dataProvider.fetchDirectionsFrom(CLLocationCoordinate2DMake(lat1, long1), to:             CLLocationCoordinate2DMake(lat2, long2)) {optionalRoute in
@@ -143,57 +147,14 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
                 }
                 
             }
-            i++
+            i = i + 2
+            println(i)
             
-            /*if(coordsArray.count - 1 == taps)
-            {
-                complete = 1
-                coordsArray.append(endingPosition)
-                
-                
-                var position = CLLocationCoordinate2DMake(endLat, endLong)
-                var marker = GMSMarker(position: position)
-                marker.title = "End"
-                marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-                marker.map = mapView
-                
-                self.dataProvider.fetchDirectionsFrom(coordsArray[coordsArray.count - 3], to: coordsArray[coordsArray.count - 2]) {optionalRoute in
-                    if let encodedRoute = optionalRoute {
-                        let path = GMSPath(fromEncodedPath: encodedRoute)
-                        let line = GMSPolyline(path: path)
-                        
-                        line.strokeWidth = 4.0
-                        line.tappable = true
-                        line.map = self.mapView
-                        
-                        
-                    }
-                    
-                }
-                self.dataProvider.fetchDirectionsFrom(coordsArray[coordsArray.count - 2], to: coordsArray[coordsArray.count - 1]) {optionalRoute in
-                    if let encodedRoute = optionalRoute {
-                        let path = GMSPath(fromEncodedPath: encodedRoute)
-                        let line = GMSPolyline(path: path)
-                        
-                        line.strokeWidth = 4.0
-                        line.tappable = true
-                        line.map = self.mapView
-                    }
-                }
-                
-                var k = 0
-                
-                while(k < coordsArray.count){
-                    workArray.append(coordsArray[k].latitude)
-                    workArray.append(coordsArray[k].longitude)
-                    k++
-                    
-                }
-                
-                
-            }*/
+
         }
     
+
+
     
     
     }

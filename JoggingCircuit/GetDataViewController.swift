@@ -60,6 +60,7 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         endSwitch.setOn(false, animated: false);
         startSwitch.addTarget(self, action: Selector("stateChanged:"), forControlEvents: UIControlEvents.ValueChanged)
         endSwitch.addTarget(self, action: Selector("stateChanged2:"), forControlEvents: UIControlEvents.ValueChanged)
+        showButton.hidden = true
 
     }
     
@@ -130,6 +131,8 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         })
         
         self.taps = tapsText.text.toInt()
+        showButton.hidden = false
+
 
     }
     
