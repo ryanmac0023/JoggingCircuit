@@ -33,7 +33,7 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     var startLat: CLLocationDegrees!
     var startLong: CLLocationDegrees!
     var taps: Int!
-    var maps: [Double] = []
+    var maps: [AnyObject] = []
 
     var startCurrent: Bool = false
     var endCurrent: Bool = false
@@ -61,6 +61,13 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         startSwitch.addTarget(self, action: Selector("stateChanged:"), forControlEvents: UIControlEvents.ValueChanged)
         endSwitch.addTarget(self, action: Selector("stateChanged2:"), forControlEvents: UIControlEvents.ValueChanged)
         showButton.hidden = true
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let gameNamesFromNSUD = defaults.stringArrayForKey("maps") {
+            maps = gameNamesFromNSUD
+        }
+        
+        println(maps)
 
     }
     
@@ -174,6 +181,8 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         viewController.currentPosition = currentPosition
        // let defaults = NSUserDefaults.standardUserDefaults()
        // defaults.setObject(maps, forKey: "maps")
+            
+            
         }
 
 

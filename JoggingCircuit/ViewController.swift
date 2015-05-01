@@ -63,6 +63,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             endLong = currentPosition.longitude
         }
         
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let scoreFromNSUD = defaults.arrayForKey("maps"){
+            maps = scoreFromNSUD
+            
+        }
+
         
 
         self.testFunc()
@@ -295,12 +301,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         startMarker.map = mapView
         endMarker.map = mapView
             
-        
-            
-            if (coordsArray.count < (taps + 2))
-            {
+
                 var i = 0
-                var j = 2
+                var j = 0
                 
 
                 
@@ -327,7 +330,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     }
                     i++
                     j++
-                    if(coordsArray.count - 1 == taps)
+                   /* if(coordsArray.count - 1 == taps)
                     {
                         coordsArray.append(endingPosition)
                         
@@ -364,10 +367,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                         check = 1
                         
                         
-                    }
+                    }*/
                 }
 
-        }
+        
         }
         
     }
