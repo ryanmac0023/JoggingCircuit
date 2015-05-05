@@ -13,7 +13,7 @@ import Darwin
 
 
 class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
-
+    
     
     
     let dataProvider = GoogleDataProvider()
@@ -37,15 +37,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var startTime = NSTimeInterval()
     var timer = NSTimer()
     var maps: [AnyObject] = []
-
     
-
- 
+    
+    
+    
     var workArray: Array<Double> = []
     var coordsArray: Array<CLLocationCoordinate2D> = []
     var markersArray: Array<GMSMarker> = []
-       var test: Int = 0
-        var check: Int = 0
+    var test: Int = 0
+    var check: Int = 0
     var complete: Int = 0
     var blah: Double = 0.0
     
@@ -68,12 +68,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             maps = scoreFromNSUD
             
         }
-
         
-
+        
+        
         self.testFunc()
-
-
+        
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -82,28 +82,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     }
     
     func testFunc(){
+        var camera = GMSCameraPosition.cameraWithLatitude(startLat, longitude: startLong, zoom: 15)
+        mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
+        mapView.myLocationEnabled = true
+        mapView.delegate = self
+        var position = CLLocationCoordinate2DMake(startLat,  startLong)
+        coordsArray.append(position)
+        markerStart = GMSMarker(position: position)
+        endingPosition = CLLocationCoordinate2DMake(endLat, endLong)
+        markerStart.title = "Start"
+        markerStart.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
+        markerStart.map = mapView
+        markersArray.append(markerStart)
+        markerEnd = GMSMarker(position: endingPosition)
+        markerEnd.title = "End"
+        markerEnd.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+        markerEnd.map = mapView
+        markersArray.append(markerEnd)
         
-        
-            
-            var camera = GMSCameraPosition.cameraWithLatitude(startLat, longitude: startLong, zoom: 15)
-            mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
-            mapView.myLocationEnabled = true
-            mapView.delegate = self
-            var position = CLLocationCoordinate2DMake(startLat,  startLong)
-            coordsArray.append(position)
-            markerStart = GMSMarker(position: position)
-            endingPosition = CLLocationCoordinate2DMake(endLat, endLong)
-            markerStart.title = "Start"
-            markerStart.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
-            markerStart.map = mapView
-            markersArray.append(markerStart)
-            markerEnd = GMSMarker(position: endingPosition)
-            markerEnd.title = "End"
-            markerEnd.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-            markerEnd.map = mapView
-            markersArray.append(markerEnd)
-            
-            self.view = mapView
+        self.view = mapView
         
         
         undoButton.setTitle("Undo Tap", forState: .Normal)
@@ -145,20 +142,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             mapView.settings.myLocationButton = true
         }
     }
-
-
+    
+    
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         if let location = locations.first as? CLLocation {
             
             
             currentPosition = location.coordinate
-
+            
             if(check == 0){
-            mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
-                        self.locManager.stopUpdatingLocation()
+                mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+                self.locManager.stopUpdatingLocation()
             }
             else if(check == 1){
-            mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 17, bearing: 0, viewingAngle: 0)
+                mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 17, bearing: 0, viewingAngle: 0)
             }
         }
     }
@@ -172,17 +169,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-
+        
         if(complete == 1){
-           maps.append(workArray)
+            maps.append(workArray)
             let defaults = NSUserDefaults.standardUserDefaults()
-
+            
             defaults.setObject(maps, forKey: "maps")
             
         }
-
+        
     }
-
+    
     
     func startPressed(sender:UIButton!){
         
@@ -218,45 +215,46 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                 }
                 
             }
-
-
             
-                    var k = 0
-                    
-                    
-                    while(k < coordsArray.count){
-                        workArray.append(coordsArray[k].latitude)
-                        workArray.append(coordsArray[k].longitude)
-                        k++
-                        
-                    }
+            
+            
+            var k = 0
+            
+            
+            while(k < coordsArray.count){
+                workArray.append(coordsArray[k].latitude)
+                workArray.append(coordsArray[k].longitude)
+                k++
+                
+            }
             
         }
-
-        
+            
+            
         else{
-        timerLabel.frame = CGRectMake(120, 510, 100, 50)
-        timerLabel.font = UIFont(name: timerLabel.font.fontName, size: 20)
-                self.view.addSubview(timerLabel)
-        
-        while(markersArray.count > 2)
-        {
-            var marker = markersArray[markersArray.count - 1]
-            marker.map = nil
-            markersArray.removeLast()
+            timerLabel.frame = CGRectMake(120, 510, 100, 50)
+            timerLabel.font = UIFont(name: timerLabel.font.fontName, size: 20)
+            self.view.addSubview(timerLabel)
+            
+            while(markersArray.count > 2)
+            {
+                var marker = markersArray[markersArray.count - 1]
+                marker.map = nil
+                markersArray.removeLast()
+            }
+            
+            
+            startButton.hidden = true
+            undoButton.hidden = true
+            
+            self.locManager.startUpdatingLocation()
+            self.check = 1
+            
+            let aSelector : Selector = "updateTime"
+            timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
+            startTime = NSDate.timeIntervalSinceReferenceDate()
         }
         
-        startButton.hidden = true
-        undoButton.hidden = true
-        
-        self.locManager.startUpdatingLocation()
-        self.check = 1
-        
-        let aSelector : Selector = "updateTime"
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
-        startTime = NSDate.timeIntervalSinceReferenceDate()
-        }
-    
     }
     
     func updateTime(){
@@ -287,127 +285,129 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     }
     
     func undoPressed(sender: UIButton!) {
-
+        
         if(markersArray.count > 2)
         {
-        var marker = markersArray[markersArray.count - 1]
-        
-        self.mapView.clear()
-        markersArray.removeLast()
-        coordsArray.removeLast()
-        var startMarker = markersArray[0]
-        var endMarker = markersArray[1]
-        
-        startMarker.map = mapView
-        endMarker.map = mapView
+            var marker = markersArray[markersArray.count - 1]
             
-
-                var i = 0
-                var j = 0
-                
-
-                
-                
-                
-                while(i < coordsArray.count - 1)
-                {
-                    
-                    var marker = markersArray[j]
-                    marker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
-                    
-                    marker.map = mapView
-
-                    self.dataProvider.fetchDirectionsFrom(coordsArray[i], to: coordsArray[i+1]) {optionalRoute in
-                        if let encodedRoute = optionalRoute {
-                            let path = GMSPath(fromEncodedPath: encodedRoute)
-                            let line = GMSPolyline(path: path)
-                            
-                            line.strokeWidth = 4.0
-                            line.tappable = true
-                            line.map = self.mapView
-                        }
-                        
-                    }
-                    i++
-                    j++
-                   /* if(coordsArray.count - 1 == taps)
-                    {
-                        coordsArray.append(endingPosition)
-                        
-                        
-                        var position = CLLocationCoordinate2DMake(endLat, endLong)
-                        var marker = GMSMarker(position: position)
-                        marker.title = "End"
-                        marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-                        marker.map = self.mapView
-                        
-                        self.dataProvider.fetchDirectionsFrom(coordsArray[coordsArray.count - 3], to: coordsArray[coordsArray.count - 2]) {optionalRoute in
-                            if let encodedRoute = optionalRoute {
-                                let path = GMSPath(fromEncodedPath: encodedRoute)
-                                let line = GMSPolyline(path: path)
-                                
-                                line.strokeWidth = 4.0
-                                line.tappable = true
-                                line.map = self.mapView
-                                
-                                
-                            }
-                            
-                        }
-                        self.dataProvider.fetchDirectionsFrom(coordsArray[coordsArray.count - 2], to: coordsArray[coordsArray.count - 1]) {optionalRoute in
-                            if let encodedRoute = optionalRoute {
-                                let path = GMSPath(fromEncodedPath: encodedRoute)
-                                let line = GMSPolyline(path: path)
-                                
-                                line.strokeWidth = 4.0
-                                line.tappable = true
-                                line.map = self.mapView
-                            }
-                        }
-                        check = 1
-                        
-                        
-                    }*/
-                }
-
-        
-        }
-        
-    }
-    
-
-    func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
-        coordsArray.append(coordinate)
-
-
+            self.mapView.clear()
+            markersArray.removeLast()
+            coordsArray.removeLast()
+            var startMarker = markersArray[0]
+            var endMarker = markersArray[1]
+            
+            startMarker.map = mapView
+            endMarker.map = mapView
+            
+            
             var i = 0
-        
-                var position = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
-                var marker = GMSMarker(position: position)
+            var j = 0
+            
+            
+            
+            
+            
+            while(i < coordsArray.count - 1)
+            {
+                
+                var marker = markersArray[j]
                 marker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
-        
+                
                 marker.map = mapView
-            markersArray.append(marker)
-            
-        
-
-        while(i < coordsArray.count - 1)
-        {
-            
-        self.dataProvider.fetchDirectionsFrom(coordsArray[i], to: coordsArray[i+1]) {optionalRoute in
-            if let encodedRoute = optionalRoute {
+                
+                self.dataProvider.fetchDirectionsFrom(coordsArray[i], to: coordsArray[i+1]) {optionalRoute in
+                    if let encodedRoute = optionalRoute {
+                        let path = GMSPath(fromEncodedPath: encodedRoute)
+                        let line = GMSPolyline(path: path)
+                        
+                        line.strokeWidth = 4.0
+                        line.tappable = true
+                        line.map = self.mapView
+                    }
+                    
+                }
+                i++
+                j++
+                /* if(coordsArray.count - 1 == taps)
+                {
+                coordsArray.append(endingPosition)
+                
+                
+                var position = CLLocationCoordinate2DMake(endLat, endLong)
+                var marker = GMSMarker(position: position)
+                marker.title = "End"
+                marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+                marker.map = self.mapView
+                
+                self.dataProvider.fetchDirectionsFrom(coordsArray[coordsArray.count - 3], to: coordsArray[coordsArray.count - 2]) {optionalRoute in
+                if let encodedRoute = optionalRoute {
                 let path = GMSPath(fromEncodedPath: encodedRoute)
                 let line = GMSPolyline(path: path)
                 
                 line.strokeWidth = 4.0
                 line.tappable = true
-                line.map = mapView
+                line.map = self.mapView
+                
+                
+                }
+                
+                }
+                self.dataProvider.fetchDirectionsFrom(coordsArray[coordsArray.count - 2], to: coordsArray[coordsArray.count - 1]) {optionalRoute in
+                if let encodedRoute = optionalRoute {
+                let path = GMSPath(fromEncodedPath: encodedRoute)
+                let line = GMSPolyline(path: path)
+                
+                line.strokeWidth = 4.0
+                line.tappable = true
+                line.map = self.mapView
+                }
+                }
+                check = 1
+                
+                
+                }*/
             }
             
-            }
-            i++
+            
+        }
+        
+    }
+    
+    
+    func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
+        
+        if (coordsArray.count <=  taps)
+        {
+            coordsArray.append(coordinate)
 
+            var i = 0
             
+            var position = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
+            var marker = GMSMarker(position: position)
+            marker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
+            
+            marker.map = mapView
+            markersArray.append(marker)
+            
+            
+            
+            while(i < coordsArray.count - 1)
+            {
+                
+                self.dataProvider.fetchDirectionsFrom(coordsArray[i], to: coordsArray[i+1]) {optionalRoute in
+                    if let encodedRoute = optionalRoute {
+                        let path = GMSPath(fromEncodedPath: encodedRoute)
+                        let line = GMSPolyline(path: path)
+                        
+                        line.strokeWidth = 4.0
+                        line.tappable = true
+                        line.map = mapView
+                    }
+                    
+                }
+                i++
+                
+                
                 var k = 0
                 
                 
@@ -417,9 +417,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     k++
                     
                 }
+                
+            }
             
         }
-
     }
 }
 
