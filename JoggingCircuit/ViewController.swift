@@ -39,6 +39,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var markerEnd = GMSMarker()
     var startTime = NSTimeInterval()
     var timer = NSTimer()
+    var arrMaps: [AnyObject] = []
     var maps: [AnyObject] = []
     
     var pauseElapsedTime = NSTimeInterval()
@@ -65,12 +66,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             endLat = currentPosition.latitude
             endLong = currentPosition.longitude
         }
-        
+        /*
         let defaults = NSUserDefaults.standardUserDefaults()
         if let scoreFromNSUD = defaults.arrayForKey("maps"){
             maps = scoreFromNSUD
-            
-        }
+        }*/
+        
+        maps = []
+        
         stopped = false
         self.testFunc()
         
@@ -207,47 +210,71 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     func startPressed(sender:UIButton!){
         
         if(startButton.titleLabel?.text == "Finish Route"){
-            startButton.setTitle("Start", forState: .Normal)
-            
-            var i = 0
-            while(i < coordsArray.count - 1)
-            {
-                
-                self.dataProvider.fetchDirectionsFrom(coordsArray[i], to: coordsArray[i+1]) {optionalRoute in
+            if(coordsArray.count > 2){
+                startButton.setTitle("Start", forState: .Normal)
+                self.dataProvider.fetchDirectionsFrom(coordsArray[0], to: coordsArray[2]) {optionalRoute in
                     if let encodedRoute = optionalRoute {
                         let path = GMSPath(fromEncodedPath: encodedRoute)
                         let line = GMSPolyline(path: path)
+                        
+                        println("got here")
                         
                         line.strokeWidth = 4.0
                         line.tappable = true
                         line.map = self.mapView
                     }
-                }
-                i++
-            }
-            
-            self.dataProvider.fetchDirectionsFrom(coordsArray[i], to: endingPosition) {optionalRoute in
-                if let encodedRoute = optionalRoute {
-                    let path = GMSPath(fromEncodedPath: encodedRoute)
-                    let line = GMSPolyline(path: path)
                     
-                    line.strokeWidth = 4.0
-                    line.tappable = true
-                    line.map = self.mapView
                 }
                 
-            }
-            
-            var k = 0
-            
-            while(k < coordsArray.count){
-                workArray.append(coordsArray[k].latitude)
-                workArray.append(coordsArray[k].longitude)
-                k++
+                var i = 0
+                while(i < coordsArray.count - 1)
+                {
+                    
+                    self.dataProvider.fetchDirectionsFrom(coordsArray[i], to: coordsArray[i+1]) {optionalRoute in
+                        if let encodedRoute = optionalRoute {
+                            let path = GMSPath(fromEncodedPath: encodedRoute)
+                            let line = GMSPolyline(path: path)
+                            
+                            line.strokeWidth = 4.0
+                            line.tappable = true
+                            line.map = self.mapView
+                        }
+                    }
+                    i++
+                }
                 
+                self.dataProvider.fetchDirectionsFrom(coordsArray[i], to: endingPosition) {optionalRoute in
+                    if let encodedRoute = optionalRoute {
+                        let path = GMSPath(fromEncodedPath: encodedRoute)
+                        let line = GMSPolyline(path: path)
+                        
+                        println("got here")
+                        
+                        line.strokeWidth = 4.0
+                        line.tappable = true
+                        line.map = self.mapView
+                    }
+                    
+                }
+                
+                var k = 0
+                workArray.removeAll()
+                while(k < coordsArray.count){
+                    workArray.append(coordsArray[k].latitude)
+                    workArray.append(coordsArray[k].longitude)
+                    k++
+                    
+                }
+                println(workArray)
+                complete = 1;
             }
-            complete = 1;
-            
+            else{
+                let alertController = UIAlertController(title: "Error", message:
+                    "Please tap the map at least once to generate a route!", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
         }
             
         else{

@@ -35,7 +35,7 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
     var markerEnd = GMSMarker()
     var startTime = NSTimeInterval()
     var timer = NSTimer()
-    var maps: [[AnyObject]] = []
+    var maps: [AnyObject] = []
     var workArray: Array<Double> = []
 
     
@@ -72,8 +72,8 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
 
         startLat = workArray[0]
         startLong = workArray[1]
-        endLat = workArray[workArray.count - 2]
-        endLong = workArray[workArray.count - 1]
+        endLat = workArray[2]
+        endLong = workArray[3]
        self.testFunc()
         
         
@@ -85,8 +85,6 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
     }
     
     func testFunc(){
-        
-        
         
         var camera = GMSCameraPosition.cameraWithLatitude(startLat, longitude: startLong, zoom: 15)
         mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
@@ -125,9 +123,21 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         backButton.layer.cornerRadius = 13.0
         self.view.addSubview(backButton)
         
-        var i = 2
+        self.dataProvider.fetchDirectionsFrom(CLLocationCoordinate2DMake(workArray[0], workArray[1]), to:             CLLocationCoordinate2DMake(workArray[4], workArray[5])) {optionalRoute in
+            if let encodedRoute = optionalRoute {
+                let path = GMSPath(fromEncodedPath: encodedRoute)
+                let line = GMSPolyline(path: path)
+                
+                line.strokeWidth = 4.0
+                line.tappable = true
+                line.map = self.mapView
+            }
+            
+        }
+        
+        var i = 6
 
-        while(i < workArray.count)
+        while(i < workArray.count - 1)
         {
             var lat1 = workArray[i - 2]
             var long1 = workArray[i - 1]
@@ -147,11 +157,19 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
                 
             }
             i = i + 2
-            println(i)
-            
 
         }
-    
+        self.dataProvider.fetchDirectionsFrom(CLLocationCoordinate2DMake(workArray[i-2], workArray[i-1]), to:             CLLocationCoordinate2DMake(workArray[2], workArray[3])) {optionalRoute in
+            if let encodedRoute = optionalRoute {
+                let path = GMSPath(fromEncodedPath: encodedRoute)
+                let line = GMSPolyline(path: path)
+                
+                line.strokeWidth = 4.0
+                line.tappable = true
+                line.map = self.mapView
+            }
+            
+        }
 
 
     
@@ -182,7 +200,6 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
                 self.locManager.stopUpdatingLocation()
             }
             else if(check == 1){
-                println("here")
                 mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 17, bearing: 0, viewingAngle: 0)
             }
         }
@@ -256,28 +273,4 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         //concatenate minuets, seconds and milliseconds as assign it to the UILabel
         timerLabel.text = "\(strMinutes):\(strSeconds):\(strFraction)"
     }
-    
-    
-    func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
-        coordsArray.append(coordinate)
-        
-        if (coordsArray.count < (taps + 2))
-        {
-            var i = 0
-            
-            var position = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
-            var marker = GMSMarker(position: position)
-            marker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
-            
-            marker.map = mapView
-            markersArray.append(marker)
-            
-            
-            
-
-        
-        
-    }
-    }
-
 }
