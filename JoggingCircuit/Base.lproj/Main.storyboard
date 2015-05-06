@@ -93,7 +93,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1wX-6n-Kao">
-                                <rect key="frame" x="83" y="475" width="136" height="30"/>
+                                <rect key="frame" x="87" y="484" width="136" height="30"/>
                                 <state key="normal" title="Use Previous Route">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>

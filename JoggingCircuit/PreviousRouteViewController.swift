@@ -35,7 +35,7 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
     var markerEnd = GMSMarker()
     var startTime = NSTimeInterval()
     var timer = NSTimer()
-    var maps: [AnyObject] = []
+    var maps: [[AnyObject]] = []
     var workArray: Array<Double> = []
 
     
@@ -56,7 +56,6 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         let defaults = NSUserDefaults.standardUserDefaults()
         if let scoreFromNSUD = defaults.arrayForKey("maps"){
             maps = scoreFromNSUD
-            
         }
         workArray = maps[0] as! Array<Double>
         println(workArray)

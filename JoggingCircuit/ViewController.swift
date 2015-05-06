@@ -20,7 +20,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     let locManager = CLLocationManager()
     let undoButton = UIButton()
     let startButton = UIButton()
+    let playPauseButton = UIButton()
     let backButton = UIButton()
+    let resetButton = UIButton()
     let timerLabel = UILabel()
     var mapView = GMSMapView()
     var currentPosition = CLLocationCoordinate2D()
@@ -30,6 +32,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var startLat: CLLocationDegrees!
     var startLong: CLLocationDegrees!
     var taps: Int!
+    var stopped: Bool!
     var startCurrent: Bool!
     var endCurrent: Bool!
     var markerStart = GMSMarker()
@@ -38,8 +41,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var timer = NSTimer()
     var maps: [AnyObject] = []
     
-    
-    
+    var pauseElapsedTime = NSTimeInterval()
+    var pastTime = NSTimeInterval()
     
     var workArray: Array<Double> = []
     var coordsArray: Array<CLLocationCoordinate2D> = []
@@ -68,9 +71,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             maps = scoreFromNSUD
             
         }
-        
-        
-        
+        stopped = false
         self.testFunc()
         
         
@@ -90,6 +91,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         coordsArray.append(position)
         markerStart = GMSMarker(position: position)
         endingPosition = CLLocationCoordinate2DMake(endLat, endLong)
+        coordsArray.append(endingPosition)
         markerStart.title = "Start"
         markerStart.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
         markerStart.map = mapView
@@ -128,6 +130,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         self.view.addSubview(backButton)
         
         
+        playPauseButton.setTitle("► ||", forState: .Normal)
+        playPauseButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        playPauseButton.frame = CGRectMake(15, 510, 100, 50)
+        playPauseButton.addTarget(self, action: "playPausedPressed:", forControlEvents: .TouchUpInside)
+        playPauseButton.backgroundColor = UIColor(white: 0.667, alpha: 0.5)
+        playPauseButton.layer.cornerRadius = 13.0
+        
+        resetButton.setTitle("Reset", forState: .Normal)
+        resetButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        resetButton.frame = CGRectMake(225, 510, 100, 50)
+        resetButton.addTarget(self, action: "resetPressed:", forControlEvents: .TouchUpInside)
+        resetButton.backgroundColor = UIColor(white: 0.667, alpha: 0.5)
+        resetButton.layer.cornerRadius = 13.0
         
     }
     
@@ -179,7 +194,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         }
         
     }
+    func playPausedPressed(sender:UIButton!){
+        stopped = !stopped
+    }
     
+    func resetPressed(sender:UIButton!){
+        startTime = NSDate.timeIntervalSinceReferenceDate()
+        pauseElapsedTime = 0
+        timerLabel.text = "00:00:00"
+    }
     
     func startPressed(sender:UIButton!){
         
@@ -199,7 +222,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                         line.tappable = true
                         line.map = self.mapView
                     }
-                    
                 }
                 i++
             }
@@ -216,10 +238,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                 
             }
             
-            
-            
             var k = 0
-            
             
             while(k < coordsArray.count){
                 workArray.append(coordsArray[k].latitude)
@@ -227,9 +246,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                 k++
                 
             }
+            complete = 1;
             
         }
-            
             
         else{
             timerLabel.frame = CGRectMake(120, 510, 100, 50)
@@ -246,6 +265,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             
             startButton.hidden = true
             undoButton.hidden = true
+            self.view.addSubview(playPauseButton)
+            self.view.addSubview(resetButton)
             
             self.locManager.startUpdatingLocation()
             self.check = 1
@@ -258,34 +279,47 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     }
     
     func updateTime(){
-        var currentTime = NSDate.timeIntervalSinceReferenceDate()
+        if (stopped == false){
+            var currentTime = NSDate.timeIntervalSinceReferenceDate()
+            //Find the difference between current time and start time.
+            var elapsedTime: NSTimeInterval = currentTime - startTime - pauseElapsedTime
         
-        //Find the difference between current time and start time.
-        var elapsedTime: NSTimeInterval = currentTime - startTime
         
+            //calculate the minutes in elapsed time.
+            let minutes = UInt8(elapsedTime / 60.0)
+            elapsedTime -= (NSTimeInterval(minutes) * 60)
         
-        //calculate the minutes in elapsed time.
-        let minutes = UInt8(elapsedTime / 60.0)
-        elapsedTime -= (NSTimeInterval(minutes) * 60)
+            //calculate the seconds in elapsed time.
+            let seconds = UInt8(elapsedTime)
+            elapsedTime -= NSTimeInterval(seconds)
         
-        //calculate the seconds in elapsed time.
-        let seconds = UInt8(elapsedTime)
-        elapsedTime -= NSTimeInterval(seconds)
+            //find out the fraction of milliseconds to be displayed.
+            let fraction = UInt8(elapsedTime * 100)
         
-        //find out the fraction of milliseconds to be displayed.
-        let fraction = UInt8(elapsedTime * 100)
+            //add the leading zero for minutes, seconds and millseconds and store them as string constants
+            let strMinutes = minutes > 9 ? String(minutes):"0" + String(minutes)
+            let strSeconds = seconds > 9 ? String(seconds):"0" + String(seconds)
+            let strFraction = fraction > 9 ? String(fraction):"0" + String(fraction)
         
-        //add the leading zero for minutes, seconds and millseconds and store them as string constants
-        let strMinutes = minutes > 9 ? String(minutes):"0" + String(minutes)
-        let strSeconds = seconds > 9 ? String(seconds):"0" + String(seconds)
-        let strFraction = fraction > 9 ? String(fraction):"0" + String(fraction)
-        
-        //concatenate minuets, seconds and milliseconds as assign it to the UILabel
-        timerLabel.text = "\(strMinutes):\(strSeconds):\(strFraction)"
+            //concatenate minuets, seconds and milliseconds as assign it to the UILabel
+            timerLabel.text = "\(strMinutes):\(strSeconds):\(strFraction)"
+            pastTime = currentTime
+        }
+        else {
+            var currentTime = NSDate.timeIntervalSinceReferenceDate()
+            
+            //Find the difference between current time and start time.
+            pauseElapsedTime += currentTime - pastTime
+            pastTime = currentTime
+            //startTime = NSDate.timeIntervalSinceReferenceDate() reset
+        }
     }
     
     func undoPressed(sender: UIButton!) {
-        
+        if (startButton.titleLabel?.text == "Start"){
+            complete = 0
+            startButton.setTitle("Finish Route", forState: .Normal)
+        }
         if(markersArray.count > 2)
         {
             var marker = markersArray[markersArray.count - 1]
@@ -294,23 +328,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             markersArray.removeLast()
             coordsArray.removeLast()
             var startMarker = markersArray[0]
+            startMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
             var endMarker = markersArray[1]
+            endMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
             
             startMarker.map = mapView
             endMarker.map = mapView
             
-            
-            var i = 0
-            var j = 0
-            
-            
-            
-            
-            
-            while(i < coordsArray.count - 1)
+            for (var i = 2; i < markersArray.count - 1; i++)
             {
-                
-                var marker = markersArray[j]
+                var marker = markersArray[i]
                 marker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
                 
                 marker.map = mapView
@@ -326,57 +353,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     }
                     
                 }
-                i++
-                j++
-                /* if(coordsArray.count - 1 == taps)
-                {
-                coordsArray.append(endingPosition)
-                
-                
-                var position = CLLocationCoordinate2DMake(endLat, endLong)
-                var marker = GMSMarker(position: position)
-                marker.title = "End"
-                marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-                marker.map = self.mapView
-                
-                self.dataProvider.fetchDirectionsFrom(coordsArray[coordsArray.count - 3], to: coordsArray[coordsArray.count - 2]) {optionalRoute in
-                if let encodedRoute = optionalRoute {
-                let path = GMSPath(fromEncodedPath: encodedRoute)
-                let line = GMSPolyline(path: path)
-                
-                line.strokeWidth = 4.0
-                line.tappable = true
-                line.map = self.mapView
-                
-                
-                }
-                
-                }
-                self.dataProvider.fetchDirectionsFrom(coordsArray[coordsArray.count - 2], to: coordsArray[coordsArray.count - 1]) {optionalRoute in
-                if let encodedRoute = optionalRoute {
-                let path = GMSPath(fromEncodedPath: encodedRoute)
-                let line = GMSPolyline(path: path)
-                
-                line.strokeWidth = 4.0
-                line.tappable = true
-                line.map = self.mapView
-                }
-                }
-                check = 1
-                
-                
-                }*/
             }
+            if (markersArray.count > 2){
+                self.dataProvider.fetchDirectionsFrom(coordsArray[0], to: coordsArray[2]) {optionalRoute in
+                    if let encodedRoute = optionalRoute {
+                        let path = GMSPath(fromEncodedPath: encodedRoute)
+                        let line = GMSPolyline(path: path)
+                    
+                        line.strokeWidth = 4.0
+                        line.tappable = true
+                        line.map = self.mapView
+                    }
+                }
+                var lastMarker = markersArray[coordsArray.count - 1]
+                lastMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
             
-            
+                lastMarker.map = mapView
+            }
         }
-        
     }
     
     
     func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
         
-        if (coordsArray.count <=  taps)
+        if (complete != 1)
         {
             coordsArray.append(coordinate)
 
@@ -407,9 +407,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                 }
                 i++
                 
-                
                 var k = 0
-                
                 
                 while(k < coordsArray.count){
                     workArray.append(coordsArray[k].latitude)
