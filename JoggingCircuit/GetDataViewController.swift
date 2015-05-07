@@ -11,6 +11,9 @@ import CoreLocation
 
 class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate {
     
+    
+    @IBOutlet weak var mainMenuButton: UIButton!
+    
     @IBOutlet weak var routeName: UITextField!
     
     @IBOutlet weak var endingText: UITextField!

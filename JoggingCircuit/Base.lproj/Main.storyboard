@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1WM-tV-IRa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1WM-tV-IRa">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
@@ -250,6 +250,7 @@
                     <connections>
                         <outlet property="endSwitch" destination="Tsh-KN-KWo" id="wf1-OH-tyD"/>
                         <outlet property="endingText" destination="xER-np-kCb" id="gcn-s9-GD8"/>
+                        <outlet property="mainMenuButton" destination="Ztd-F4-R6q" id="y7v-ib-YXG"/>
                         <outlet property="routeName" destination="IL6-yr-gJX" id="tHf-QM-c2t"/>
                         <outlet property="showButton" destination="LFw-gA-dbv" id="5Me-ue-vmZ"/>
                         <outlet property="startSwitch" destination="7z4-ml-SVc" id="9F5-Di-yRh"/>
@@ -322,7 +323,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="EmO-az-SPA"/>
+        <segue reference="cWP-Gy-irO"/>
         <segue reference="EZx-TC-OhL"/>
     </inferredMetricsTieBreakers>
 </document>
