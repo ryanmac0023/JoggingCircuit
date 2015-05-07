@@ -18,6 +18,8 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
     let locManager = CLLocationManager()
     let undoButton = UIButton()
     let startButton = UIButton()
+    let resetButton = UIButton()
+    let playPauseButton = UIButton()
     let backButton = UIButton()
     let timerLabel = UILabel()
     var mapView = GMSMapView()
@@ -37,6 +39,11 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
     var timer = NSTimer()
     var maps: [AnyObject] = []
     var workArray: Array<Double> = []
+    var pauseElapsedTime = NSTimeInterval()
+    var stopped: Bool!
+    var pastTime = NSTimeInterval()
+
+
 
     
     
@@ -58,22 +65,21 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
             maps = scoreFromNSUD
         }
         workArray = maps[0] as! Array<Double>
-        println(workArray)
-        println(workArray.count)
+
 
         // Do any additional setup after loading the view, typically from a nib.
        self.locManager.delegate = self
         self.locManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locManager.requestWhenInUseAuthorization()
 
-        
-        //println(maps.count);
-        
+                
 
         startLat = workArray[0]
         startLong = workArray[1]
         endLat = workArray[2]
         endLong = workArray[3]
+        stopped = false
+
        self.testFunc()
         
         
@@ -122,6 +128,24 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         backButton.backgroundColor = UIColor(white: 0.667, alpha: 0.5)
         backButton.layer.cornerRadius = 13.0
         self.view.addSubview(backButton)
+        
+        playPauseButton.setTitle("► ||", forState: .Normal)
+        playPauseButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        playPauseButton.frame = CGRectMake(15, 450, 100, 50)
+        playPauseButton.addTarget(self, action: "playPausedPressed:", forControlEvents: .TouchUpInside)
+        playPauseButton.backgroundColor = UIColor(white: 0.667, alpha: 0.5)
+        playPauseButton.layer.cornerRadius = 13.0
+
+        
+        resetButton.setTitle("Reset", forState: .Normal)
+        resetButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        resetButton.frame = CGRectMake(15, 510, 100, 50)
+        resetButton.addTarget(self, action: "resetPressed:", forControlEvents: .TouchUpInside)
+        resetButton.backgroundColor = UIColor(white: 0.667, alpha: 0.5)
+        resetButton.layer.cornerRadius = 13.0
+
+
+
         
         self.dataProvider.fetchDirectionsFrom(CLLocationCoordinate2DMake(workArray[0], workArray[1]), to:             CLLocationCoordinate2DMake(workArray[4], workArray[5])) {optionalRoute in
             if let encodedRoute = optionalRoute {
@@ -201,6 +225,8 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
             }
             else if(check == 1){
                 mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 17, bearing: 0, viewingAngle: 0)
+                check = 2;
+
             }
         }
     }
@@ -210,7 +236,7 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
     }
     
     func backPressed(sender:UIButton!){
-        performSegueWithIdentifier("backSegue", sender: sender)
+        performSegueWithIdentifier("back2", sender: sender)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -225,8 +251,21 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         
     }
     
+    func playPausedPressed(sender:UIButton!){
+        stopped = !stopped
+    }
+    
+    func resetPressed(sender:UIButton!){
+        startTime = NSDate.timeIntervalSinceReferenceDate()
+        pauseElapsedTime = 0
+        timerLabel.text = "00:00:00"
+    }
+
+    
     
     func startPressed(sender:UIButton!){
+        self.view.addSubview(resetButton)
+        self.view.addSubview(playPauseButton)
         check = 1
         timerLabel.frame = CGRectMake(120, 510, 100, 50)
         timerLabel.font = UIFont(name: timerLabel.font.fontName, size: 20)
@@ -248,29 +287,33 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
     }
     
     func updateTime(){
-        var currentTime = NSDate.timeIntervalSinceReferenceDate()
-        
-        //Find the difference between current time and start time.
-        var elapsedTime: NSTimeInterval = currentTime - startTime
-        
-        
-        //calculate the minutes in elapsed time.
-        let minutes = UInt8(elapsedTime / 60.0)
-        elapsedTime -= (NSTimeInterval(minutes) * 60)
-        
-        //calculate the seconds in elapsed time.
-        let seconds = UInt8(elapsedTime)
-        elapsedTime -= NSTimeInterval(seconds)
-        
-        //find out the fraction of milliseconds to be displayed.
-        let fraction = UInt8(elapsedTime * 100)
-        
-        //add the leading zero for minutes, seconds and millseconds and store them as string constants
-        let strMinutes = minutes > 9 ? String(minutes):"0" + String(minutes)
-        let strSeconds = seconds > 9 ? String(seconds):"0" + String(seconds)
-        let strFraction = fraction > 9 ? String(fraction):"0" + String(fraction)
-        
-        //concatenate minuets, seconds and milliseconds as assign it to the UILabel
-        timerLabel.text = "\(strMinutes):\(strSeconds):\(strFraction)"
+        if (stopped == false){
+            var currentTime = NSDate.timeIntervalSinceReferenceDate()
+            var elapsedTime: NSTimeInterval = currentTime - startTime - pauseElapsedTime
+            
+            
+            let minutes = UInt8(elapsedTime / 60.0)
+            elapsedTime -= (NSTimeInterval(minutes) * 60)
+            
+            let seconds = UInt8(elapsedTime)
+            elapsedTime -= NSTimeInterval(seconds)
+            
+            let fraction = UInt8(elapsedTime * 100)
+            
+            let strMinutes = minutes > 9 ? String(minutes):"0" + String(minutes)
+            let strSeconds = seconds > 9 ? String(seconds):"0" + String(seconds)
+            let strFraction = fraction > 9 ? String(fraction):"0" + String(fraction)
+            
+            timerLabel.text = "\(strMinutes):\(strSeconds):\(strFraction)"
+            pastTime = currentTime
+        }
+        else {
+            var currentTime = NSDate.timeIntervalSinceReferenceDate()
+            
+            pauseElapsedTime += currentTime - pastTime
+            pastTime = currentTime
+            //startTime = NSDate.timeIntervalSinceReferenceDate() reset
+        }
+
     }
 }

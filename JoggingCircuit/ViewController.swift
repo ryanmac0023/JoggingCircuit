@@ -135,14 +135,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         
         playPauseButton.setTitle("► ||", forState: .Normal)
         playPauseButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        playPauseButton.frame = CGRectMake(15, 510, 100, 50)
+        playPauseButton.frame = CGRectMake(15, 450, 100, 50)
         playPauseButton.addTarget(self, action: "playPausedPressed:", forControlEvents: .TouchUpInside)
         playPauseButton.backgroundColor = UIColor(white: 0.667, alpha: 0.5)
         playPauseButton.layer.cornerRadius = 13.0
         
         resetButton.setTitle("Reset", forState: .Normal)
         resetButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        resetButton.frame = CGRectMake(225, 510, 100, 50)
+        resetButton.frame = CGRectMake(15, 510, 100, 50)
         resetButton.addTarget(self, action: "resetPressed:", forControlEvents: .TouchUpInside)
         resetButton.backgroundColor = UIColor(white: 0.667, alpha: 0.5)
         resetButton.layer.cornerRadius = 13.0
@@ -174,6 +174,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             }
             else if(check == 1){
                 mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 17, bearing: 0, viewingAngle: 0)
+                check = 2;
+                
             }
         }
     }
@@ -217,7 +219,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                         let path = GMSPath(fromEncodedPath: encodedRoute)
                         let line = GMSPolyline(path: path)
                         
-                        println("got here")
                         
                         line.strokeWidth = 4.0
                         line.tappable = true
@@ -248,7 +249,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                         let path = GMSPath(fromEncodedPath: encodedRoute)
                         let line = GMSPolyline(path: path)
                         
-                        println("got here")
                         
                         line.strokeWidth = 4.0
                         line.tappable = true
@@ -265,7 +265,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     k++
                     
                 }
-                println(workArray)
                 complete = 1;
             }
             else{
@@ -308,34 +307,27 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     func updateTime(){
         if (stopped == false){
             var currentTime = NSDate.timeIntervalSinceReferenceDate()
-            //Find the difference between current time and start time.
             var elapsedTime: NSTimeInterval = currentTime - startTime - pauseElapsedTime
         
         
-            //calculate the minutes in elapsed time.
             let minutes = UInt8(elapsedTime / 60.0)
             elapsedTime -= (NSTimeInterval(minutes) * 60)
         
-            //calculate the seconds in elapsed time.
             let seconds = UInt8(elapsedTime)
             elapsedTime -= NSTimeInterval(seconds)
         
-            //find out the fraction of milliseconds to be displayed.
             let fraction = UInt8(elapsedTime * 100)
         
-            //add the leading zero for minutes, seconds and millseconds and store them as string constants
             let strMinutes = minutes > 9 ? String(minutes):"0" + String(minutes)
             let strSeconds = seconds > 9 ? String(seconds):"0" + String(seconds)
             let strFraction = fraction > 9 ? String(fraction):"0" + String(fraction)
         
-            //concatenate minuets, seconds and milliseconds as assign it to the UILabel
             timerLabel.text = "\(strMinutes):\(strSeconds):\(strFraction)"
             pastTime = currentTime
         }
         else {
             var currentTime = NSDate.timeIntervalSinceReferenceDate()
             
-            //Find the difference between current time and start time.
             pauseElapsedTime += currentTime - pastTime
             pastTime = currentTime
             //startTime = NSDate.timeIntervalSinceReferenceDate() reset

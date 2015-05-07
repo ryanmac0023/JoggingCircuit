@@ -65,7 +65,6 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
             maps = gameNamesFromNSUD
         }
         
-        println(maps)
 
     }
     
