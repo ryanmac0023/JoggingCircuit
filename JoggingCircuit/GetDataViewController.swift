@@ -166,8 +166,6 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
             viewController.startCurrent = startCurrent
             viewController.endCurrent = endCurrent
             viewController.currentPosition = currentPosition
-            
-            
         }
         
         

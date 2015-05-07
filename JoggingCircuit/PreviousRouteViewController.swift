@@ -13,7 +13,7 @@ import Foundation
 class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
     
     //var workArray: [AnyObject] = []
-    
+    var index: Int!
     let dataProvider = GoogleDataProvider()
     let locManager = CLLocationManager()
     let undoButton = UIButton()
@@ -64,7 +64,7 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         if let scoreFromNSUD = defaults.arrayForKey("maps"){
             maps = scoreFromNSUD
         }
-        workArray = maps[0] as! Array<Double>
+        workArray = maps[index] as! Array<Double>
 
 
         // Do any additional setup after loading the view, typically from a nib.
