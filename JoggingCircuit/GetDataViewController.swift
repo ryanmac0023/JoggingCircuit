@@ -111,11 +111,15 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         var address = self.endingText.text
         var geocoder = CLGeocoder()
         geocoder.geocodeAddressString(address, completionHandler: {(placemarks: [AnyObject]!, error: NSError!) -> Void in
+            if((error) == nil){
             if let placemark = placemarks?[0] as? CLPlacemark {
                 
                 self.endLat = placemark.location.coordinate.latitude
                 self.endLong = placemark.location.coordinate.longitude
 
+                }}
+            else{
+                println("error")
             }
         })
         
