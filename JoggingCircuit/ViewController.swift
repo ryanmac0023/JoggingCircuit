@@ -14,7 +14,7 @@ import Darwin
 
 class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
     
-    
+    var routeName: String!
     
     let dataProvider = GoogleDataProvider()
     let locManager = CLLocationManager()
@@ -31,7 +31,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var endLong: CLLocationDegrees!
     var startLat: CLLocationDegrees!
     var startLong: CLLocationDegrees!
-    var taps: Int!
     var stopped: Bool!
     var startCurrent: Bool!
     var endCurrent: Bool!
@@ -66,13 +65,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             endLat = currentPosition.latitude
             endLong = currentPosition.longitude
         }
-        /*
         let defaults = NSUserDefaults.standardUserDefaults()
         if let scoreFromNSUD = defaults.arrayForKey("maps"){
             maps = scoreFromNSUD
-        }*/
-        
-        maps = []
+        }
         
         stopped = false
         self.testFunc()
@@ -407,8 +403,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             
             marker.map = mapView
             markersArray.append(marker)
-            
-            
             
             while(i < coordsArray.count - 1)
             {
