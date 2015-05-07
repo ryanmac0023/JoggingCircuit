@@ -39,7 +39,7 @@ class mainVC: UIViewController{
     
     @IBAction func changedRecordStepper(sender: UIStepper) {
         var newIndex = Int(sender.value)
-        if newIndex >= names.count {
+        if newIndex > names.count {
             newIndex = 1
         } else if newIndex < 1 {
             newIndex = names.count
