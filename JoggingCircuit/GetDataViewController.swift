@@ -147,12 +147,8 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        if(segue.identifier == "previousRoute")
+        if(segue.identifier == "createRoute")
         {
-            
-        }
-        else{
-            
             var viewController:ViewController = segue.destinationViewController as! ViewController
             if(endCurrent == true)
             {

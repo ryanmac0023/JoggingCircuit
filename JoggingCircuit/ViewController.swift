@@ -340,9 +340,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             complete = 0
             startButton.setTitle("Finish Route", forState: .Normal)
         }
-        if(markersArray.count > 2)
+        if(coordsArray.count > 2)
         {
-            var marker = markersArray[markersArray.count - 1]
+            //var marker = markersArray[markersArray.count - 1]
             
             self.mapView.clear()
             markersArray.removeLast()
@@ -374,20 +374,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     
                 }
             }
-            self.dataProvider.fetchDirectionsFrom(coordsArray[0], to: coordsArray[2]) {optionalRoute in
-                if let encodedRoute = optionalRoute {
-                    let path = GMSPath(fromEncodedPath: encodedRoute)
-                    let line = GMSPolyline(path: path)
-                    
-                    line.strokeWidth = 4.0
-                    line.tappable = true
-                    line.map = self.mapView
+            if (coordsArray.count > 2){
+                self.dataProvider.fetchDirectionsFrom(coordsArray[0], to: coordsArray[2]) {optionalRoute in
+                    if let encodedRoute = optionalRoute {
+                        let path = GMSPath(fromEncodedPath: encodedRoute)
+                        let line = GMSPolyline(path: path)
+                        
+                        line.strokeWidth = 4.0
+                        line.tappable = true
+                        line.map = self.mapView
+                    }
                 }
+                var lastMarker = markersArray[coordsArray.count - 1]
+                lastMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
+                
+                lastMarker.map = mapView
             }
-            var lastMarker = markersArray[coordsArray.count - 1]
-            lastMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
-            
-            lastMarker.map = mapView
         }
     }
     

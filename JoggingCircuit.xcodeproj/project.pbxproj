@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B0186BF1AFB240800079C81 /* mainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0186BE1AFB240800079C81 /* mainVC.swift */; };
 		942A2AA41AD593AD0051C92B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942A2AA31AD593AD0051C92B /* AppDelegate.swift */; };
 		942A2AA61AD593AD0051C92B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942A2AA51AD593AD0051C92B /* ViewController.swift */; };
 		942A2AA91AD593AD0051C92B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 942A2AA71AD593AD0051C92B /* Main.storyboard */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B0186BE1AFB240800079C81 /* mainVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainVC.swift; sourceTree = "<group>"; };
 		942A2A9E1AD593AD0051C92B /* JoggingCircuit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JoggingCircuit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		942A2AA21AD593AD0051C92B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		942A2AA31AD593AD0051C92B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				942A2AA71AD593AD0051C92B /* Main.storyboard */,
 				942A53C91AE5F6890005CE51 /* running-path_00006124.jpg */,
 				942A53C71AE5CE960005CE51 /* GetDataViewController.swift */,
+				0B0186BE1AFB240800079C81 /* mainVC.swift */,
 				94C8163C1AEF1770002595A4 /* PreviousRouteViewController.swift */,
 				942A2AAA1AD593AD0051C92B /* Images.xcassets */,
 				942A2AAC1AD593AD0051C92B /* LaunchScreen.xib */,
@@ -286,6 +289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B0186BF1AFB240800079C81 /* mainVC.swift in Sources */,
 				942A53C81AE5CE960005CE51 /* GetDataViewController.swift in Sources */,
 				942A2AA61AD593AD0051C92B /* ViewController.swift in Sources */,
 				942A53C61AE59C130005CE51 /* GoogleDataProvider.swift in Sources */,
