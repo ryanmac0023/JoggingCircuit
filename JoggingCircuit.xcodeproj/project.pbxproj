@@ -31,6 +31,7 @@
 		942A53C61AE59C130005CE51 /* GoogleDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942A53C51AE59C130005CE51 /* GoogleDataProvider.swift */; };
 		942A53C81AE5CE960005CE51 /* GetDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942A53C71AE5CE960005CE51 /* GetDataViewController.swift */; };
 		942A53CA1AE5F6890005CE51 /* running-path_00006124.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 942A53C91AE5F6890005CE51 /* running-path_00006124.jpg */; };
+		94C8163D1AEF1770002595A4 /* PreviousRouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C8163C1AEF1770002595A4 /* PreviousRouteViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		942A53C51AE59C130005CE51 /* GoogleDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleDataProvider.swift; sourceTree = "<group>"; };
 		942A53C71AE5CE960005CE51 /* GetDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDataViewController.swift; sourceTree = "<group>"; };
 		942A53C91AE5F6890005CE51 /* running-path_00006124.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "running-path_00006124.jpg"; sourceTree = "<group>"; };
+		94C8163C1AEF1770002595A4 /* PreviousRouteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviousRouteViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 				942A2AA71AD593AD0051C92B /* Main.storyboard */,
 				942A53C91AE5F6890005CE51 /* running-path_00006124.jpg */,
 				942A53C71AE5CE960005CE51 /* GetDataViewController.swift */,
+				94C8163C1AEF1770002595A4 /* PreviousRouteViewController.swift */,
 				942A2AAA1AD593AD0051C92B /* Images.xcassets */,
 				942A2AAC1AD593AD0051C92B /* LaunchScreen.xib */,
 				942A2AA11AD593AD0051C92B /* Supporting Files */,
@@ -286,6 +289,7 @@
 				942A53C81AE5CE960005CE51 /* GetDataViewController.swift in Sources */,
 				942A2AA61AD593AD0051C92B /* ViewController.swift in Sources */,
 				942A53C61AE59C130005CE51 /* GoogleDataProvider.swift in Sources */,
+				94C8163D1AEF1770002595A4 /* PreviousRouteViewController.swift in Sources */,
 				942A2AA41AD593AD0051C92B /* AppDelegate.swift in Sources */,
 				942A2AEA1AD596EA0051C92B /* google.m in Sources */,
 			);

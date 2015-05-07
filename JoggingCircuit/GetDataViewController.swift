@@ -14,7 +14,6 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     
     @IBOutlet weak var endingText: UITextField!
     
-    @IBOutlet weak var tapsText: UITextField!
     @IBOutlet weak var startingText: UITextField!
     
     @IBOutlet weak var showButton: UIButton!
@@ -33,6 +32,8 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     var startLat: CLLocationDegrees!
     var startLong: CLLocationDegrees!
     var taps: Int!
+    var maps: [AnyObject] = []
+
     var startCurrent: Bool = false
     var endCurrent: Bool = false
     
@@ -52,12 +53,19 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         showButton.layer.cornerRadius = 13.0
         
         self.endingText.delegate = self
-        self.tapsText.delegate = self
         self.endingText.delegate = self
         startSwitch.setOn(false, animated: false);
         endSwitch.setOn(false, animated: false);
         startSwitch.addTarget(self, action: Selector("stateChanged:"), forControlEvents: UIControlEvents.ValueChanged)
         endSwitch.addTarget(self, action: Selector("stateChanged2:"), forControlEvents: UIControlEvents.ValueChanged)
+        showButton.hidden = true
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let gameNamesFromNSUD = defaults.stringArrayForKey("maps") {
+            maps = gameNamesFromNSUD
+        }
+        
+        println(maps)
 
     }
     
@@ -127,7 +135,9 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
             }
         })
         
-        self.taps = tapsText.text.toInt()
+        self.taps = 5
+        showButton.hidden = false
+
 
     }
     
@@ -138,17 +148,42 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-
+        if(segue.identifier == "previousRoute")
+        {
+            
+        }
+        else{
+            
             var viewController:ViewController = segue.destinationViewController as! ViewController
-            viewController.endLat = endLat
-            viewController.endLong = endLong
-            viewController.startLat = startLat
-            viewController.startLong = startLong
+            if(endCurrent == true)
+            {
+                viewController.endLat = currentPosition.latitude
+                viewController.endLong = currentPosition.longitude
+            }
+            else{
+                viewController.endLat = endLat
+                viewController.endLong = endLong
+            }
+            if(startCurrent == true){
+                viewController.startLat = currentPosition.latitude
+                viewController.startLong = currentPosition.longitude
+            }
+            else{
+                viewController.startLat = startLat
+                viewController.startLong = startLong
+            }
+            
             viewController.taps = taps
             viewController.startCurrent = startCurrent
             viewController.endCurrent = endCurrent
-        viewController.currentPosition = currentPosition
-
+            viewController.currentPosition = currentPosition
+            // let defaults = NSUserDefaults.standardUserDefaults()
+            // defaults.setObject(maps, forKey: "maps")
+            
+            
+        }
+        
+        
     }
 
 }
