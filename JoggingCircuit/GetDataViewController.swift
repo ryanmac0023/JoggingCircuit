@@ -16,6 +16,8 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     
     @IBOutlet weak var startingText: UITextField!
     
+    @IBOutlet weak var routeName: UITextField!
+    
     @IBOutlet weak var showButton: UIButton!
     @IBOutlet weak var storeButton: UIButton!
     
@@ -26,12 +28,11 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     let locManager = CLLocationManager()
 
     var currentPosition = CLLocationCoordinate2D()
-
+    
     var endLat: CLLocationDegrees!
     var endLong: CLLocationDegrees!
     var startLat: CLLocationDegrees!
     var startLong: CLLocationDegrees!
-    var taps: Int!
     var maps: [AnyObject] = []
 
     var startCurrent: Bool = false
@@ -134,7 +135,8 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
             }
         })
         
-        self.taps = 5
+        
+        
         showButton.hidden = false
 
 
@@ -172,7 +174,7 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
                 viewController.startLong = startLong
             }
             
-            viewController.taps = taps
+            viewController.routeName = self.routeName.text
             viewController.startCurrent = startCurrent
             viewController.endCurrent = endCurrent
             viewController.currentPosition = currentPosition
