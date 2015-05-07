@@ -26,6 +26,8 @@ class mainVC: UIViewController{
         btnPreviousRoute.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.3)
         btnPreviousRoute.tintColor = UIColor.redColor()
         btnPreviousRoute.layer.cornerRadius = 13.0
+        recordStepper.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.3)
+        recordStepper.tintColor = UIColor.redColor()
 
 
         let defaults = NSUserDefaults.standardUserDefaults()
