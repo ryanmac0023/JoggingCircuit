@@ -20,6 +20,10 @@ class mainVC: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.topItem?.title = "Home"
+
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "running-path_00006124.jpg")!)
+
         let defaults = NSUserDefaults.standardUserDefaults()
         if let NSUD = defaults.stringArrayForKey("names"){
             names = NSUD

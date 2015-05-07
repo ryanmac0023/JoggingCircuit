@@ -44,6 +44,8 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         self.locManager.delegate = self
         self.locManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locManager.requestWhenInUseAuthorization()
+        self.navigationController?.navigationBar.topItem?.title = "Create Route"
+
 
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "running-path_00006124.jpg")!)
 
