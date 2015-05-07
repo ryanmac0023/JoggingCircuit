@@ -32,25 +32,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mAj-X0-3Fg">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Create New Route">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="137" y="147" width="126" height="30"/>
-                                </variation>
-                                <connections>
-                                    <segue destination="Xne-h6-f7V" kind="presentation" id="EZx-TC-OhL"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qQ-jb-tNr">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Use Previous Route">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="132" y="420" width="136" height="30"/>
+                                    <rect key="frame" x="76" y="318" width="136" height="30"/>
                                 </variation>
                                 <connections>
                                     <segue destination="pvi-Yk-TZr" kind="presentation" identifier="previousRoute" id="xO8-2F-zyZ"/>
@@ -59,7 +47,7 @@
                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="1I9-Ct-nvH">
                                 <rect key="frame" x="-47" y="-14" width="94" height="29"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="290" y="285" width="94" height="29"/>
+                                    <rect key="frame" x="210" y="285" width="94" height="29"/>
                                 </variation>
                                 <connections>
                                     <action selector="changedRecordStepper:" destination="OQ1-5H-d4t" eventType="valueChanged" id="CqZ-hl-tH6"/>
@@ -71,25 +59,37 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="289" width="266" height="21"/>
+                                    <rect key="frame" x="16" y="289" width="186" height="21"/>
                                 </variation>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mAj-X0-3Fg">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Create New Route">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="81" y="144" width="126" height="30"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="Xne-h6-f7V" kind="presentation" id="EZx-TC-OhL"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
                             <mask key="subviews">
-                                <exclude reference="mAj-X0-3Fg"/>
                                 <exclude reference="1qQ-jb-tNr"/>
                                 <exclude reference="1I9-Ct-nvH"/>
                                 <exclude reference="xLe-tO-crs"/>
+                                <exclude reference="mAj-X0-3Fg"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
-                                <include reference="mAj-X0-3Fg"/>
                                 <include reference="1qQ-jb-tNr"/>
                                 <include reference="1I9-Ct-nvH"/>
                                 <include reference="xLe-tO-crs"/>
+                                <include reference="mAj-X0-3Fg"/>
                             </mask>
                         </variation>
                     </view>
@@ -102,7 +102,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QQQ-eg-Y55" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-916.5" y="559"/>
+            <point key="canvasLocation" x="-901.5" y="931"/>
         </scene>
         <!--Get Data View Controller-->
         <scene sceneID="pKZ-mL-zRy">
@@ -191,15 +191,6 @@
                                     <rect key="frame" x="109" y="339" width="164" height="21"/>
                                 </variation>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1wX-6n-Kao">
-                                <rect key="frame" x="87" y="484" width="136" height="30"/>
-                                <state key="normal" title="Use Previous Route">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="pvi-Yk-TZr" kind="presentation" identifier="previousRoute" id="8gC-fU-9V3"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ztd-F4-R6q">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Main Menu">
@@ -322,17 +313,16 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <segue destination="Xne-h6-f7V" kind="show" identifier="back2" id="qsK-ik-oC3"/>
+                        <segue destination="OQ1-5H-d4t" kind="presentation" identifier="back2" id="cWP-Gy-irO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wl2-B5-Sce" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-126" y="1052"/>
+            <point key="canvasLocation" x="-246" y="1085"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="EmO-az-SPA"/>
         <segue reference="EZx-TC-OhL"/>
-        <segue reference="xO8-2F-zyZ"/>
     </inferredMetricsTieBreakers>
 </document>
