@@ -14,8 +14,7 @@ import Darwin
 
 class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
     
-    
-    
+    var name: String!
     let dataProvider = GoogleDataProvider()
     let locManager = CLLocationManager()
     let undoButton = UIButton()
@@ -31,7 +30,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var endLong: CLLocationDegrees!
     var startLat: CLLocationDegrees!
     var startLong: CLLocationDegrees!
-    var taps: Int!
     var stopped: Bool!
     var startCurrent: Bool!
     var endCurrent: Bool!
@@ -41,6 +39,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var timer = NSTimer()
     var arrMaps: [AnyObject] = []
     var maps: [AnyObject] = []
+    var names: [AnyObject] = []
     
     var pauseElapsedTime = NSTimeInterval()
     var pastTime = NSTimeInterval()
@@ -48,10 +47,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var workArray: Array<Double> = []
     var coordsArray: Array<CLLocationCoordinate2D> = []
     var markersArray: Array<GMSMarker> = []
-    var test: Int = 0
     var check: Int = 0
     var complete: Int = 0
-    var blah: Double = 0.0
     
     
     override func viewDidLoad() {
@@ -66,13 +63,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             endLat = currentPosition.latitude
             endLong = currentPosition.longitude
         }
-        /*
+        
         let defaults = NSUserDefaults.standardUserDefaults()
         if let scoreFromNSUD = defaults.arrayForKey("maps"){
-        maps = scoreFromNSUD
-        }*/
+            maps = scoreFromNSUD
+            names = defaults.stringArrayForKey("names")!
+        }
         
-        maps = []
         
         stopped = false
         self.testFunc()
@@ -192,12 +189,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         
         if(complete == 1){
             maps.append(workArray)
+            names.append(name)
             let defaults = NSUserDefaults.standardUserDefaults()
             
             defaults.setObject(maps, forKey: "maps")
-            
+            defaults.setObject(names, forKey: "names")
         }
-        
     }
     func playPausedPressed(sender:UIButton!){
         stopped = !stopped

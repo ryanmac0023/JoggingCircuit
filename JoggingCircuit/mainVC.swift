@@ -23,6 +23,7 @@ class mainVC: UIViewController{
         let defaults = NSUserDefaults.standardUserDefaults()
         if let NSUD = defaults.stringArrayForKey("names"){
             names = NSUD
+            updateStatusHistory(names.count)
         }
         if (names.count == 0){
             btnPreviousRoute.hidden = true
@@ -39,20 +40,19 @@ class mainVC: UIViewController{
     @IBAction func changedRecordStepper(sender: UIStepper) {
         var newIndex = Int(sender.value)
         if newIndex >= names.count {
-            newIndex = 0
-        } else if newIndex < 0 {
-            newIndex = names.count - 1
+            newIndex = 1
+        } else if newIndex < 1 {
+            newIndex = names.count
         }
         sender.value = Double(newIndex)
         updateStatusHistory(newIndex)
     }
     func updateStatusHistory(whichStatus: Int) {
-        if whichStatus > 0 {
-            var newStatusLabel = "Route: " + (names[whichStatus] as! String)
-            RecordLabel.text = newStatusLabel
-            var index = whichStatus - 1
-            recordStepper.value = Double(index)
-        }
+        var newStatusLabel : String!
+        newStatusLabel = "Route: " + (names[whichStatus - 1] as! String)
+        RecordLabel.text = newStatusLabel
+        var index = whichStatus
+        recordStepper.value = Double(index)
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         /*

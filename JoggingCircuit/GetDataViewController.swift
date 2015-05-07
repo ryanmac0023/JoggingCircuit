@@ -11,6 +11,7 @@ import CoreLocation
 
 class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate {
     
+    @IBOutlet weak var routeName: UITextField!
     
     @IBOutlet weak var endingText: UITextField!
     
@@ -31,8 +32,8 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     var endLong: CLLocationDegrees!
     var startLat: CLLocationDegrees!
     var startLong: CLLocationDegrees!
-    var taps: Int!
     var maps: [AnyObject] = []
+    var names: [AnyObject] = []
 
     var startCurrent: Bool = false
     var endCurrent: Bool = false
@@ -59,11 +60,6 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         startSwitch.addTarget(self, action: Selector("stateChanged:"), forControlEvents: UIControlEvents.ValueChanged)
         endSwitch.addTarget(self, action: Selector("stateChanged2:"), forControlEvents: UIControlEvents.ValueChanged)
         showButton.hidden = true
-        
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let gameNamesFromNSUD = defaults.stringArrayForKey("maps") {
-            maps = gameNamesFromNSUD
-        }
         
 
     }
@@ -134,7 +130,6 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
             }
         })
         
-        self.taps = 5
         showButton.hidden = false
 
 
@@ -167,13 +162,10 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
                 viewController.startLat = startLat
                 viewController.startLong = startLong
             }
-            
-            viewController.taps = taps
+            viewController.name = routeName.text
             viewController.startCurrent = startCurrent
             viewController.endCurrent = endCurrent
             viewController.currentPosition = currentPosition
-            // let defaults = NSUserDefaults.standardUserDefaults()
-            // defaults.setObject(maps, forKey: "maps")
             
             
         }
