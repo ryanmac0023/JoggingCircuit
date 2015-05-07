@@ -69,7 +69,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         /*
         let defaults = NSUserDefaults.standardUserDefaults()
         if let scoreFromNSUD = defaults.arrayForKey("maps"){
-            maps = scoreFromNSUD
+        maps = scoreFromNSUD
         }*/
         
         maps = []
@@ -227,7 +227,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     
                 }
                 
-                var i = 0
+                var i = 2
+                
                 while(i < coordsArray.count - 1)
                 {
                     
@@ -308,20 +309,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         if (stopped == false){
             var currentTime = NSDate.timeIntervalSinceReferenceDate()
             var elapsedTime: NSTimeInterval = currentTime - startTime - pauseElapsedTime
-        
-        
+            
+            
             let minutes = UInt8(elapsedTime / 60.0)
             elapsedTime -= (NSTimeInterval(minutes) * 60)
-        
+            
             let seconds = UInt8(elapsedTime)
             elapsedTime -= NSTimeInterval(seconds)
-        
+            
             let fraction = UInt8(elapsedTime * 100)
-        
+            
             let strMinutes = minutes > 9 ? String(minutes):"0" + String(minutes)
             let strSeconds = seconds > 9 ? String(seconds):"0" + String(seconds)
             let strFraction = fraction > 9 ? String(fraction):"0" + String(fraction)
-        
+            
             timerLabel.text = "\(strMinutes):\(strSeconds):\(strFraction)"
             pastTime = currentTime
         }
@@ -347,9 +348,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             markersArray.removeLast()
             coordsArray.removeLast()
             var startMarker = markersArray[0]
-            startMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
+            startMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
             var endMarker = markersArray[1]
-            endMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
+            endMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
             
             startMarker.map = mapView
             endMarker.map = mapView
@@ -373,22 +374,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     
                 }
             }
-            if (markersArray.count > 2){
-                self.dataProvider.fetchDirectionsFrom(coordsArray[0], to: coordsArray[2]) {optionalRoute in
-                    if let encodedRoute = optionalRoute {
-                        let path = GMSPath(fromEncodedPath: encodedRoute)
-                        let line = GMSPolyline(path: path)
+            self.dataProvider.fetchDirectionsFrom(coordsArray[0], to: coordsArray[2]) {optionalRoute in
+                if let encodedRoute = optionalRoute {
+                    let path = GMSPath(fromEncodedPath: encodedRoute)
+                    let line = GMSPolyline(path: path)
                     
-                        line.strokeWidth = 4.0
-                        line.tappable = true
-                        line.map = self.mapView
-                    }
+                    line.strokeWidth = 4.0
+                    line.tappable = true
+                    line.map = self.mapView
                 }
-                var lastMarker = markersArray[coordsArray.count - 1]
-                lastMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
-            
-                lastMarker.map = mapView
             }
+            var lastMarker = markersArray[coordsArray.count - 1]
+            lastMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
+            
+            lastMarker.map = mapView
         }
     }
     
@@ -398,8 +397,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         if (complete != 1)
         {
             coordsArray.append(coordinate)
-
-            var i = 0
+            
+            var i = 2
             
             var position = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
             var marker = GMSMarker(position: position)
@@ -408,7 +407,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             marker.map = mapView
             markersArray.append(marker)
             
-            
+            self.dataProvider.fetchDirectionsFrom(coordsArray[0], to: coordsArray[2]) {optionalRoute in
+                if let encodedRoute = optionalRoute {
+                    let path = GMSPath(fromEncodedPath: encodedRoute)
+                    let line = GMSPolyline(path: path)
+                    
+                    line.strokeWidth = 4.0
+                    line.tappable = true
+                    line.map = mapView
+                }
+                
+            }
             
             while(i < coordsArray.count - 1)
             {
@@ -439,6 +448,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             
         }
     }
+    
 }
-
 
