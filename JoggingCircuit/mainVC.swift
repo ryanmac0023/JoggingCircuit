@@ -23,6 +23,10 @@ class mainVC: UIViewController{
         self.navigationController?.navigationBar.topItem?.title = "Home"
 
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "running-path_00006124.jpg")!)
+        btnPreviousRoute.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.3)
+        btnPreviousRoute.tintColor = UIColor.redColor()
+        btnPreviousRoute.layer.cornerRadius = 13.0
+
 
         let defaults = NSUserDefaults.standardUserDefaults()
         if let NSUD = defaults.stringArrayForKey("names"){
