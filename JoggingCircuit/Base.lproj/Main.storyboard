@@ -20,19 +20,6 @@
             </objects>
             <point key="canvasLocation" x="-1582.5" y="634"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="PWO-SQ-PCx">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CVp-re-Pga" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController id="HkK-ld-d6J" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Bmz-sQ-scV">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                </navigationController>
-            </objects>
-            <point key="canvasLocation" x="-2683.5" y="1106"/>
-        </scene>
         <!--MainVC-->
         <scene sceneID="P6c-DL-m6v">
             <objects>
@@ -67,15 +54,6 @@
                                     <action selector="changedRecordStepper:" destination="OQ1-5H-d4t" eventType="valueChanged" id="CqZ-hl-tH6"/>
                                 </connections>
                             </stepper>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Route :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLe-tO-crs">
-                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="45" y="279" width="230" height="39"/>
-                                </variation>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mAj-X0-3Fg">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -89,22 +67,42 @@
                                     <segue destination="Xne-h6-f7V" kind="presentation" id="EZx-TC-OhL"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="routeName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Gj-Sh-x0L">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="45" y="273" width="230" height="45"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Route :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLe-tO-crs">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="45" y="220" width="230" height="45"/>
+                                </variation>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="1qQ-jb-tNr"/>
                                 <exclude reference="1I9-Ct-nvH"/>
-                                <exclude reference="xLe-tO-crs"/>
                                 <exclude reference="mAj-X0-3Fg"/>
+                                <exclude reference="0Gj-Sh-x0L"/>
+                                <exclude reference="xLe-tO-crs"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="1qQ-jb-tNr"/>
                                 <include reference="1I9-Ct-nvH"/>
-                                <include reference="xLe-tO-crs"/>
                                 <include reference="mAj-X0-3Fg"/>
+                                <include reference="0Gj-Sh-x0L"/>
+                                <include reference="xLe-tO-crs"/>
                             </mask>
                         </variation>
                     </view>
@@ -114,6 +112,7 @@
                         <outlet property="RecordLabel" destination="xLe-tO-crs" id="Ece-5q-hC8"/>
                         <outlet property="btnCreateRoute" destination="mAj-X0-3Fg" id="Nh7-wA-Rcd"/>
                         <outlet property="btnPreviousRoute" destination="1qQ-jb-tNr" id="5Hl-ue-5Yi"/>
+                        <outlet property="recordNameLabel" destination="0Gj-Sh-x0L" id="Bv3-gm-lua"/>
                         <outlet property="recordStepper" destination="1I9-Ct-nvH" id="djw-P8-qhj"/>
                     </connections>
                 </viewController>
@@ -343,7 +342,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wl2-B5-Sce" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-246" y="1085"/>
+            <point key="canvasLocation" x="-9" y="1615"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

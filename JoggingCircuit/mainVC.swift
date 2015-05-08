@@ -21,6 +21,9 @@ class mainVC: UIViewController{
     
     @IBOutlet weak var RecordLabel: UILabel!
     
+    @IBOutlet weak var recordNameLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.topItem?.title = "Home"
@@ -65,8 +68,9 @@ class mainVC: UIViewController{
     }
     func updateStatusHistory(whichStatus: Int) {
         var newStatusLabel : String!
-        newStatusLabel = "Route: " + (names[whichStatus - 1] as! String)
+        newStatusLabel = "Route: \(whichStatus) of \(names.count) \n"
         RecordLabel.text = newStatusLabel
+        recordNameLabel.text = (names[whichStatus - 1] as! String)
         index = whichStatus - 1
         recordStepper.value = Double(whichStatus)
     }
