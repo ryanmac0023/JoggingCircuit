@@ -14,6 +14,9 @@ class mainVC: UIViewController{
     var index: Int!
     @IBOutlet weak var btnPreviousRoute: UIButton!
     
+    @IBOutlet weak var btnCreateRoute: UIButton!
+    
+    
     @IBOutlet weak var recordStepper: UIStepper!
     
     @IBOutlet weak var RecordLabel: UILabel!
@@ -23,6 +26,9 @@ class mainVC: UIViewController{
         self.navigationController?.navigationBar.topItem?.title = "Home"
 
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "running-path_00006124.jpg")!)
+        btnCreateRoute.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.3)
+        btnCreateRoute.tintColor = UIColor.redColor()
+        btnCreateRoute.layer.cornerRadius = 13.0
         btnPreviousRoute.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.3)
         btnPreviousRoute.tintColor = UIColor.redColor()
         btnPreviousRoute.layer.cornerRadius = 13.0
