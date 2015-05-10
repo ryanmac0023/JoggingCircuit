@@ -184,6 +184,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             
             defaults.setObject(maps, forKey: "maps")
             defaults.setObject(names, forKey: "names")
+            let alert = UIAlertView()
+            alert.title = "Route saved"
+            alert.message = "Your route has been saved. You can access it from the main screen. "
+            alert.addButtonWithTitle("Dismiss")
+            alert.show()
         }
     }
     func playPausedPressed(sender:UIButton!){
