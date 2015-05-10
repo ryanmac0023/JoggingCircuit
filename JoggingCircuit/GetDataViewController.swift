@@ -123,7 +123,7 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         }
         else{
             let alertController = UIAlertController(title: "Error", message:
-                "There was an error generating the routes! Please enter your locations again.", preferredStyle: UIAlertControllerStyle.Alert)
+                "There was an error confirming the locations! Please check information and try again. ", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
             
             self.presentViewController(alertController, animated: true, completion: nil)
