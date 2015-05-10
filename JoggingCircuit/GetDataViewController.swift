@@ -11,24 +11,16 @@ import CoreLocation
 
 class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate {
     
-    
     @IBOutlet weak var mainMenuButton: UIButton!
-    
     @IBOutlet weak var routeName: UITextField!
-    
     @IBOutlet weak var endingText: UITextField!
-    
     @IBOutlet weak var startingText: UITextField!
-    
     @IBOutlet weak var showButton: UIButton!
     @IBOutlet weak var storeButton: UIButton!
-    
     @IBOutlet weak var startSwitch: UISwitch!
-    
     @IBOutlet weak var endSwitch: UISwitch!
     
     let locManager = CLLocationManager()
-
     var currentPosition = CLLocationCoordinate2D()
 
     var endLat: CLLocationDegrees!
@@ -41,14 +33,12 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     var startCurrent: Bool = false
     var endCurrent: Bool = false
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.locManager.delegate = self
         self.locManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locManager.requestWhenInUseAuthorization()
         self.navigationController?.navigationBar.topItem?.title = "Create Route"
-
 
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "running-path_00006124.jpg")!)
         mainMenuButton.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.3)
@@ -66,21 +56,14 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         startSwitch.addTarget(self, action: Selector("stateChanged:"), forControlEvents: UIControlEvents.ValueChanged)
         endSwitch.addTarget(self, action: Selector("stateChanged2:"), forControlEvents: UIControlEvents.ValueChanged)
         showButton.hidden = true
-        
-
     }
     
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         
         if status == .AuthorizedWhenInUse {
-            
-            
             self.locManager.startUpdatingLocation()
-            
-
         }
     }
-    
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         if let location = locations.first as? CLLocation {
@@ -88,7 +71,6 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
             currentPosition = location.coordinate
             
             self.locManager.stopUpdatingLocation()
-            
         }
     }
     

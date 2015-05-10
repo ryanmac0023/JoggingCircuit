@@ -42,12 +42,6 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
     var pauseElapsedTime = NSTimeInterval()
     var stopped: Bool!
     var pastTime = NSTimeInterval()
-
-
-
-    
-    
-    
     
     var coordsArray: Array<CLLocationCoordinate2D> = []
     var markersArray: Array<GMSMarker> = []
@@ -65,24 +59,19 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
             maps = scoreFromNSUD
         }
         workArray = maps[index] as! Array<Double>
-
-
+        
         // Do any additional setup after loading the view, typically from a nib.
-       self.locManager.delegate = self
+        self.locManager.delegate = self
         self.locManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locManager.requestWhenInUseAuthorization()
-
-                
-
+        
         startLat = workArray[0]
         startLong = workArray[1]
         endLat = workArray[2]
         endLong = workArray[3]
         stopped = false
-
-       self.testFunc()
         
-        
+        self.testFunc()
     }
     
     override func didReceiveMemoryWarning() {
@@ -112,7 +101,6 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         
         self.view = mapView
         
-        
         startButton.setTitle("Start Route", forState: .Normal)
         startButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         startButton.frame = CGRectMake(120, 510, 100, 50)
@@ -135,7 +123,6 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         playPauseButton.addTarget(self, action: "playPausedPressed:", forControlEvents: .TouchUpInside)
         playPauseButton.backgroundColor = UIColor(white: 0.667, alpha: 0.5)
         playPauseButton.layer.cornerRadius = 13.0
-
         
         resetButton.setTitle("Reset", forState: .Normal)
         resetButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
@@ -143,10 +130,6 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         resetButton.addTarget(self, action: "resetPressed:", forControlEvents: .TouchUpInside)
         resetButton.backgroundColor = UIColor(white: 0.667, alpha: 0.5)
         resetButton.layer.cornerRadius = 13.0
-
-
-
-        
         self.dataProvider.fetchDirectionsFrom(CLLocationCoordinate2DMake(workArray[0], workArray[1]), to:             CLLocationCoordinate2DMake(workArray[4], workArray[5])) {optionalRoute in
             if let encodedRoute = optionalRoute {
                 let path = GMSPath(fromEncodedPath: encodedRoute)
@@ -156,18 +139,16 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
                 line.tappable = true
                 line.map = self.mapView
             }
-            
         }
         
         var i = 6
-
+        
         while(i < workArray.count - 1)
         {
             var lat1 = workArray[i - 2]
             var long1 = workArray[i - 1]
             var lat2 = workArray[i]
             var long2 = workArray[i+1]
-            
             
             self.dataProvider.fetchDirectionsFrom(CLLocationCoordinate2DMake(lat1, long1), to:             CLLocationCoordinate2DMake(lat2, long2)) {optionalRoute in
                 if let encodedRoute = optionalRoute {
@@ -178,10 +159,8 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
                     line.tappable = true
                     line.map = self.mapView
                 }
-                
             }
             i = i + 2
-
         }
         self.dataProvider.fetchDirectionsFrom(CLLocationCoordinate2DMake(workArray[i-2], workArray[i-1]), to:             CLLocationCoordinate2DMake(workArray[2], workArray[3])) {optionalRoute in
             if let encodedRoute = optionalRoute {
@@ -192,14 +171,9 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
                 line.tappable = true
                 line.map = self.mapView
             }
-            
         }
-
-
-    
-    
     }
-
+    
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         
         if status == .AuthorizedWhenInUse {
@@ -226,7 +200,7 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
             else if(check == 1){
                 mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 17, bearing: 0, viewingAngle: 0)
                 check = 2;
-
+                
             }
         }
     }
@@ -260,8 +234,6 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         pauseElapsedTime = 0
         timerLabel.text = "00:00:00"
     }
-
-    
     
     func startPressed(sender:UIButton!){
         self.view.addSubview(resetButton)
@@ -270,8 +242,6 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         timerLabel.frame = CGRectMake(120, 510, 100, 50)
         timerLabel.font = UIFont(name: timerLabel.font.fontName, size: 20)
         self.view.addSubview(timerLabel)
-        
-
         
         startButton.hidden = true
         undoButton.hidden = true
@@ -282,15 +252,12 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
         let aSelector : Selector = "updateTime"
         timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
         startTime = NSDate.timeIntervalSinceReferenceDate()
-        
-        
     }
     
     func updateTime(){
         if (stopped == false){
             var currentTime = NSDate.timeIntervalSinceReferenceDate()
             var elapsedTime: NSTimeInterval = currentTime - startTime - pauseElapsedTime
-            
             
             let minutes = UInt8(elapsedTime / 60.0)
             elapsedTime -= (NSTimeInterval(minutes) * 60)
@@ -314,6 +281,6 @@ class PreviousRouteViewController: UIViewController, CLLocationManagerDelegate, 
             pastTime = currentTime
             //startTime = NSDate.timeIntervalSinceReferenceDate() reset
         }
-
+        
     }
 }

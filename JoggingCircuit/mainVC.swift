@@ -13,16 +13,10 @@ class mainVC: UIViewController{
     var names: [AnyObject] = []
     var index: Int!
     @IBOutlet weak var btnPreviousRoute: UIButton!
-    
     @IBOutlet weak var btnCreateRoute: UIButton!
-    
-    
     @IBOutlet weak var recordStepper: UIStepper!
-    
     @IBOutlet weak var RecordLabel: UILabel!
-    
     @IBOutlet weak var recordNameLabel: UILabel!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +31,6 @@ class mainVC: UIViewController{
         btnPreviousRoute.layer.cornerRadius = 13.0
         recordStepper.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.3)
         recordStepper.tintColor = UIColor.redColor()
-
 
         let defaults = NSUserDefaults.standardUserDefaults()
         if let NSUD = defaults.stringArrayForKey("names"){

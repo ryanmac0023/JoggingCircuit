@@ -50,7 +50,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     var check: Int = 0
     var complete: Int = 0
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         sleep(1)
@@ -70,11 +69,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             names = defaults.stringArrayForKey("names")!
         }
         
-        
         stopped = false
         self.testFunc()
-        
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -104,7 +100,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         
         self.view = mapView
         
-        
         undoButton.setTitle("Undo Tap", forState: .Normal)
         undoButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         undoButton.frame = CGRectMake(15, 510, 100, 50)
@@ -129,7 +124,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         backButton.layer.cornerRadius = 13.0
         self.view.addSubview(backButton)
         
-        
         playPauseButton.setTitle("► ||", forState: .Normal)
         playPauseButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         playPauseButton.frame = CGRectMake(15, 450, 100, 50)
@@ -149,8 +143,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         
         if status == .AuthorizedWhenInUse {
-            
-            
             self.locManager.startUpdatingLocation()
             
             mapView.myLocationEnabled = true
@@ -161,8 +153,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         if let location = locations.first as? CLLocation {
-            
-            
             currentPosition = location.coordinate
             
             if(check == 0){
@@ -216,19 +206,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                         let path = GMSPath(fromEncodedPath: encodedRoute)
                         let line = GMSPolyline(path: path)
                         
-                        
                         line.strokeWidth = 4.0
                         line.tappable = true
                         line.map = self.mapView
                     }
-                    
                 }
                 
                 var i = 2
                 
                 while(i < coordsArray.count - 1)
                 {
-                    
                     self.dataProvider.fetchDirectionsFrom(coordsArray[i], to: coordsArray[i+1]) {optionalRoute in
                         if let encodedRoute = optionalRoute {
                             let path = GMSPath(fromEncodedPath: encodedRoute)
@@ -247,12 +234,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                         let path = GMSPath(fromEncodedPath: encodedRoute)
                         let line = GMSPolyline(path: path)
                         
-                        
                         line.strokeWidth = 4.0
                         line.tappable = true
                         line.map = self.mapView
                     }
-                    
                 }
                 
                 var k = 0
@@ -285,7 +270,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                 marker.map = nil
                 markersArray.removeLast()
             }
-            
             
             startButton.hidden = true
             undoButton.hidden = true
@@ -328,7 +312,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             
             pauseElapsedTime += currentTime - pastTime
             pastTime = currentTime
-            //startTime = NSDate.timeIntervalSinceReferenceDate() reset
         }
     }
     
@@ -339,8 +322,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         }
         if(coordsArray.count > 2)
         {
-            //var marker = markersArray[markersArray.count - 1]
-            
             self.mapView.clear()
             markersArray.removeLast()
             coordsArray.removeLast()
@@ -433,15 +414,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     
                 }
                 i++
-                
-                var k = 0
-                
-                while(k < coordsArray.count){
-                    workArray.append(coordsArray[k].latitude)
-                    workArray.append(coordsArray[k].longitude)
-                    k++
-                    
-                }
                 
             }
             
