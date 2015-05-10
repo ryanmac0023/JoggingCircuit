@@ -23,6 +23,8 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     let locManager = CLLocationManager()
     var currentPosition = CLLocationCoordinate2D()
 
+    var check:Int!
+    
     var endLat: CLLocationDegrees!
     var endLong: CLLocationDegrees!
     var startLat: CLLocationDegrees!
@@ -35,6 +37,9 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        check = 0
+        
         self.locManager.delegate = self
         self.locManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locManager.requestWhenInUseAuthorization()
@@ -99,13 +104,17 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
     @IBAction func saveButtonPressed(sender: AnyObject) {
         var address = self.endingText.text
         var geocoder = CLGeocoder()
+        check = 0
         geocoder.geocodeAddressString(address, completionHandler: {(placemarks: [AnyObject]!, error: NSError!) -> Void in
             if let placemark = placemarks?[0] as? CLPlacemark {
                 
                 self.endLat = placemark.location.coordinate.latitude
                 self.endLong = placemark.location.coordinate.longitude
-
-                }
+                self.addCheck()
+            }
+            else {
+                self.errorMessage()
+            }
         })
         
         var address2 = self.startingText.text
@@ -115,20 +124,29 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
                 
                 self.startLat = placemark.location.coordinate.latitude
                 self.startLong = placemark.location.coordinate.longitude
-
+                self.addCheck()
+            }
+            else {
+                self.errorMessage()
             }
         })
-        if (startLat != nil && startLong != nil && endLat != nil && endLong != nil){
+        if (startCurrent && endCurrent){
             showButton.hidden = false
         }
-        else{
-            let alertController = UIAlertController(title: "Error", message:
-                "There was an error confirming the locations! Please check information and try again. ", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-            
-            self.presentViewController(alertController, animated: true, completion: nil)
-        }
 
+    }
+    func addCheck() {
+        check = check + 1
+        if (check == 2 || (check == 1 && (startCurrent || endCurrent))){
+            showButton.hidden = false
+        }
+    }
+    func errorMessage() {
+        let alertController = UIAlertController(title: "Error", message:
+            "There was an error confirming the locations! Please check information and try again. ", preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
