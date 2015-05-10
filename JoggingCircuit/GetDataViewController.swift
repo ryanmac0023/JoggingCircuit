@@ -117,16 +117,12 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         var address = self.endingText.text
         var geocoder = CLGeocoder()
         geocoder.geocodeAddressString(address, completionHandler: {(placemarks: [AnyObject]!, error: NSError!) -> Void in
-            if((error) == nil){
             if let placemark = placemarks?[0] as? CLPlacemark {
                 
                 self.endLat = placemark.location.coordinate.latitude
                 self.endLong = placemark.location.coordinate.longitude
 
-                }}
-            else{
-                println("error")
-            }
+                }
         })
         
         var address2 = self.startingText.text
@@ -139,9 +135,16 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
 
             }
         })
-        
-        showButton.hidden = false
-
+        if (startLat != nil && startLong != nil && endLat != nil && endLong != nil){
+            showButton.hidden = false
+        }
+        else{
+            let alertController = UIAlertController(title: "Error", message:
+                "There was an error generating the routes! Please enter your locations again.", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
 
     }
     
