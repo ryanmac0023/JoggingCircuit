@@ -112,7 +112,7 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
                 self.endLong = placemark.location.coordinate.longitude
                 self.addCheck()
             }
-            else {
+            else if (!self.endCurrent) {
                 self.errorMessage()
             }
         })
@@ -126,7 +126,7 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
                 self.startLong = placemark.location.coordinate.longitude
                 self.addCheck()
             }
-            else {
+            else if (!self.startCurrent) {
                 self.errorMessage()
             }
         })
