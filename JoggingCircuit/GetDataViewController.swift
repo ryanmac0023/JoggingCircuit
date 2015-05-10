@@ -49,8 +49,9 @@ class GetDataViewController: UIViewController, UITextFieldDelegate, CLLocationMa
         showButton.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.3)
         showButton.layer.cornerRadius = 13.0
         
+        self.startingText.delegate = self
         self.endingText.delegate = self
-        self.endingText.delegate = self
+        self.routeName.delegate = self
         startSwitch.setOn(false, animated: false);
         endSwitch.setOn(false, animated: false);
         startSwitch.addTarget(self, action: Selector("stateChanged:"), forControlEvents: UIControlEvents.ValueChanged)
